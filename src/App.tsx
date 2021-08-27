@@ -1,6 +1,8 @@
 import React, { FC } from 'react'
+import { Route } from 'react-router-dom'
 import styled, { createGlobalStyle } from 'styled-components'
 import { Header } from './components/Header'
+import { Main } from './pages/Main'
 
 const GlobalStyles = createGlobalStyle`
   body {
@@ -17,6 +19,7 @@ export const App: FC = (): JSX.Element => {
       <GlobalStyles />
       <AppContainer>
         <Header />
+        <Route path={'/'} component={Main} />
       </AppContainer>
     </>
   )
