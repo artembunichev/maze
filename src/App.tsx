@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
-import styled from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
+import { Header } from './components/Header'
 
 const GlobalStyles = createGlobalStyle`
   body {
@@ -10,5 +11,12 @@ const GlobalStyles = createGlobalStyle`
 const AppContainer = styled.div``
 
 export const App: FC = (): JSX.Element => {
-  return <AppContainer>Zema</AppContainer>
+  return (
+    <>
+      <GlobalStyles />
+      <AppContainer>
+        <Header />
+      </AppContainer>
+    </>
+  )
 }
