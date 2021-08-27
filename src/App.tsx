@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { FC } from 'react'
+import styled from 'styled-components'
 
-function App() {
-  return <div className='App'>zema</div>
+const AppContainer = styled.div``
+
+export const App: FC = (): JSX.Element => {
+  return <AppContainer>Zema</AppContainer>
 }
-
-export default App
