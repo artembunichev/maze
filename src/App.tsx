@@ -5,7 +5,8 @@ import { Header } from './components/Header'
 const GlobalStyles = createGlobalStyle`
   body {
     margin:0;
-    padding:0
+    padding:0;
+    background-color:#c5ecf1;
   }
 `
 const AppContainer = styled.div``
