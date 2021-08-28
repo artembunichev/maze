@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { InputsSection } from './InputsSection'
 
 const MainContainer = styled.div``
+
 const CreateMazesButton = styled.button``
 
 export const Main: FC = (): JSX.Element => {
