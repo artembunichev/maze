@@ -14,7 +14,7 @@ export interface ICell {
 }
 export interface IMazeStore {
   AppStore: IAppStore
-  widthOfCell: number
+  cellSize: number
   numberOfCells: number
   width: number
   height: number
@@ -28,7 +28,7 @@ export class MazeStore implements IMazeStore {
   }
   AppStore: IAppStore
 
-  widthOfCell = 50
+  cellSize = 50
 
   get width(): number {
     return this.AppStore.mazeWidth
