@@ -11,32 +11,29 @@ const NumberOfMazesInput = styled.input``
 export const InputsSection: FC = observer((): JSX.Element => {
   const { AppStore } = useStore()
 
-  const setMazeWidth = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const setValueFromInput = (e: React.ChangeEvent<HTMLInputElement>, func: (number: number) => void): void => {
     const value = Number(e.target.value)
     if (!isNaN(value)) {
-      AppStore.setMazeWidth(value)
-    }
-  }
-  const setMazeHeight = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const value = Number(e.target.value)
-    if (!isNaN(value)) {
-      AppStore.setMazeHeight(value)
-    }
-  }
-  const setNumberOfMazes = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const value = Number(e.target.value)
-    if (!isNaN(value)) {
-      AppStore.setNumberOfMazes(value)
+      func.bind(AppStore)(value)
     }
   }
 
   return (
     <InputSectionContainer>
       <MazeSizeInputsContainer>
-        <MazeSizeInput value={AppStore.mazeWidth} onChange={setMazeWidth} />
-        <MazeSizeInput value={AppStore.mazeHeight} onChange={setMazeHeight} />
+        <MazeSizeInput
+          value={AppStore.mazeWidth}
+          onChange={(e) => setValueFromInput(e, AppStore.setMazeWidth)}
+        />
+        <MazeSizeInput
+          value={AppStore.mazeHeight}
+          onChange={(e) => setValueFromInput(e, AppStore.setMazeHeight)}
+        />
       </MazeSizeInputsContainer>
-      <NumberOfMazesInput value={AppStore.numberOfMazes} onChange={setNumberOfMazes} />
+      <NumberOfMazesInput
+        value={AppStore.numberOfMazes}
+        onChange={(e) => setValueFromInput(e, AppStore.setNumberOfMazes)}
+      />
     </InputSectionContainer>
   )
 })
