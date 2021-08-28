@@ -16,8 +16,8 @@ export class AppStore implements IAppStore {
   }
 
   numberOfMazes = 3
-  mazeWidth = 25
-  mazeHeight = 25
+  mazeWidth = 6
+  mazeHeight = 6
 
   setNumberOfMazes(number: number): void {
     this.numberOfMazes = number
