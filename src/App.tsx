@@ -1,8 +1,9 @@
-import React, { FC } from 'react'
-import { Route } from 'react-router-dom'
+import React, { FC, useEffect } from 'react'
+import { Route, useHistory } from 'react-router-dom'
 import styled, { createGlobalStyle } from 'styled-components'
 import { Header } from './components/Header'
 import { Main } from './pages/Main'
+import { MazePage } from './pages/Maze'
 
 const GlobalStyles = createGlobalStyle`
   body {
@@ -14,12 +15,18 @@ const GlobalStyles = createGlobalStyle`
 const AppContainer = styled.div``
 
 export const App: FC = (): JSX.Element => {
+  const history = useHistory()
+  useEffect(() => {
+    history.push('/')
+  }, [])
+
   return (
     <>
       <GlobalStyles />
       <AppContainer>
         <Header />
-        <Route path={'/'} component={Main} />
+        <Route exact path={'/'} component={Main} />
+        <Route exact path={'/maze'} component={MazePage} />
       </AppContainer>
     </>
   )
