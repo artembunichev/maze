@@ -5,9 +5,9 @@ export interface IAppStore {
   mazeWidth: number
   mazeHeight: number
 
-  setNumberOfMazes: (number: number) => void
-  setMazeWidth: (width: number) => void
-  setMazeHeight: (height: number) => void
+  setNumberOfMazes(number: number): void
+  setMazeWidth(width: number): void
+  setMazeHeight(height: number): void
 }
 
 export class AppStore implements IAppStore {
