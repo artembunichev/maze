@@ -41,7 +41,7 @@ export class MazeStore implements IMazeStore {
   }
   get cellsArray(): Array<ICell> {
     const arr: Array<ICell> = []
-    for (let i = 0; i <= this.numberOfCells; i++) {
+    for (let i = 0; i < this.numberOfCells; i++) {
       arr.push({
         border: {
           left: true,
