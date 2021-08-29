@@ -17,6 +17,6 @@ export class RootStore implements IRootStore {
   }
 
   createUserStore(): IUserStore {
-    return remotedev(new UserStore(), { name: 'UserStore' })
+    return remotedev(new UserStore(this.AppStore), { name: 'UserStore' })
   }
 }

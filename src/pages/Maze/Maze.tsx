@@ -53,10 +53,15 @@ const CellContainer = styled.div<CellContainerProps>`
 
 export const Maze: FC = observer((): JSX.Element => {
   const { AppStore, createMazeStore, createUserStore } = useStore()
+
   const bindCreateMazeStore = createMazeStore.bind(useStore())
+  const bindCreateUserStore = createUserStore.bind(useStore())
+
   const [mazeStore] = useState(bindCreateMazeStore)
-  const [userStore] = useState(createUserStore)
+  const [userStore] = useState(bindCreateUserStore)
+
   const [key, isKeyPressed] = useKeyboard()
+
   useEffect(() => {
     if (isKeyPressed) {
       if (key === Directions.UP) {
