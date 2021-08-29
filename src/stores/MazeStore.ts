@@ -41,16 +41,108 @@ export class MazeStore implements IMazeStore {
   }
   get cellsArray(): Array<ICell> {
     const arr: Array<ICell> = []
-    for (let i = 0; i < this.numberOfCells; i++) {
-      arr.push({
+    //Генерация границ для крайних клеток
+    //Левый верхний угол
+    arr[0] = {
+      border: {
+        left: true,
+        top: true,
+        right: false,
+        bottom: false,
+      },
+      id: uniqid(),
+    }
+    // Правый нижний угол
+    arr[this.numberOfCells - 1] = {
+      border: {
+        right: true,
+        bottom: true,
+        left: false,
+        top: false,
+      },
+      id: uniqid(),
+    }
+    //Левый нижний угол
+    arr[this.numberOfCells - this.width] = {
+      border: {
+        left: true,
+        bottom: true,
+        top: false,
+        right: false,
+      },
+      id: uniqid(),
+    }
+    //Правый верхний угол
+    arr[this.width - 1] = {
+      border: {
+        top: true,
+        right: true,
+        left: false,
+        bottom: false,
+      },
+      id: uniqid(),
+    }
+    //Индексы верха
+    for (let t = 1; t <= this.width - 2; t++) {
+      arr[t] = {
         border: {
-          left: true,
           top: true,
-          right: true,
-          bottom: true,
+          left: false,
+          right: false,
+          bottom: false,
         },
         id: uniqid(),
-      })
+      }
+    }
+    //Индексы правой стороны
+    for (let r = this.width * 2 - 1; r <= this.width - 1 + this.width * (this.width - 2); r = r + this.width) {
+      arr[r] = {
+        border: {
+          right: true,
+          left: false,
+          top: false,
+          bottom: false,
+        },
+        id: uniqid(),
+      }
+    }
+    //Индексы низа
+    for (let b = this.numberOfCells - (this.width - 1); b <= this.numberOfCells - 2; b++) {
+      arr[b] = {
+        border: {
+          bottom: true,
+          left: false,
+          top: false,
+          right: false,
+        },
+        id: uniqid(),
+      }
+    }
+    //Индексы левой стороны
+    for (let l = this.width; l <= this.width * (this.width - 2); l = l + this.width) {
+      arr[l] = {
+        border: {
+          left: true,
+          right: false,
+          top: false,
+          bottom: false,
+        },
+        id: uniqid(),
+      }
+    }
+    //Генерация границ для оставшихся клеток
+    for (let i = 0; i <= this.numberOfCells - 1; i++) {
+      if (!arr[i]) {
+        arr[i] = {
+          border: {
+            left: false,
+            top: false,
+            right: false,
+            bottom: false,
+          },
+          id: uniqid(),
+        }
+      }
     }
     return arr
   }
