@@ -57,7 +57,7 @@ export class MazeStore implements IMazeStore {
       }
     }
 
-    const sideCells = this.cellsArray.reduce((acc, r, rowIndex) => {
+    const sideCells = arr.reduce((acc, r, rowIndex) => {
       r.forEach((el, index) => {
         if (index === 0 || index === this.width - 1 || rowIndex === 0 || rowIndex === this.width - 1) {
           acc.push(el)
