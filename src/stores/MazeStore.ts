@@ -20,7 +20,6 @@ export interface IMazeStore {
   width: number
   height: number
   cellsArray: ICellArray
-  sideCells: Array<ICell>
 }
 
 export class MazeStore implements IMazeStore {
@@ -57,6 +56,16 @@ export class MazeStore implements IMazeStore {
         })
       }
     }
+
+    const sideCells = this.cellsArray.reduce((acc, r, rowIndex) => {
+      r.forEach((el, index) => {
+        if (index === 0 || index === this.width - 1 || rowIndex === 0 || rowIndex === this.width - 1) {
+          acc.push(el)
+        }
+      })
+      return acc
+    }, [])
+
     //!Заполение крайних клеток
     arr.forEach((r, rowIndex) => {
       r.forEach((el, index) => {
@@ -89,16 +98,5 @@ export class MazeStore implements IMazeStore {
     //!Генерация выхода
     arr[getRandom(0, this.width - 1)][getRandom(0, this.width - 1)].isExit = true
     return arr
-  }
-  get sideCells(): Array<ICell> {
-    const sideArray = this.cellsArray.reduce((acc, r, rowIndex) => {
-      r.forEach((el, index) => {
-        if (index === 0 || index === this.width - 1 || rowIndex === 0 || rowIndex === this.width - 1) {
-          acc.push(el)
-        }
-      })
-      return acc
-    }, [])
-    return sideArray
   }
 }
