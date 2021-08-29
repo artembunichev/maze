@@ -60,16 +60,16 @@ export const Maze: FC = observer((): JSX.Element => {
   useEffect(() => {
     if (isKeyPressed) {
       if (key === Directions.UP) {
-        userStore.updateYPosition(-mazeStore.cellSize)
+        userStore.updateYPosition(-AppStore.cellSize)
       }
       if (key === Directions.DOWN) {
-        userStore.updateYPosition(mazeStore.cellSize)
+        userStore.updateYPosition(AppStore.cellSize)
       }
       if (key === Directions.LEFT) {
-        userStore.updateXPosition(-mazeStore.cellSize)
+        userStore.updateXPosition(-AppStore.cellSize)
       }
       if (key == Directions.RIGHT) {
-        userStore.updateXPosition(mazeStore.cellSize)
+        userStore.updateXPosition(AppStore.cellSize)
       }
     }
   }, [isKeyPressed])
@@ -83,7 +83,7 @@ export const Maze: FC = observer((): JSX.Element => {
               isExit={c.isExit}
               border={c.border}
               borderWidth={AppStore.borderWidth}
-              cellSize={mazeStore.cellSize}
+              cellSize={AppStore.cellSize}
               key={c.id}>
               {index}
             </CellContainer>
@@ -95,7 +95,7 @@ export const Maze: FC = observer((): JSX.Element => {
 
   return (
     <MazeWrapper>
-      <MazeContainer mazeWidth={(mazeStore.cellSize + AppStore.borderWidth * 2) * mazeStore.width}>
+      <MazeContainer mazeWidth={(AppStore.cellSize + AppStore.borderWidth * 2) * mazeStore.width}>
         <User userSize={userStore.userSize} position={userStore.userPosition} />
         {cells}
       </MazeContainer>
