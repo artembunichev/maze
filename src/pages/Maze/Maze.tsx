@@ -65,16 +65,16 @@ export const Maze: FC = observer((): JSX.Element => {
   useEffect(() => {
     if (isKeyPressed) {
       if (key === Directions.UP) {
-        userStore.updateYPosition(-AppStore.cellSize)
+        userStore.updateYPosition(-AppStore.cellSize - AppStore.borderWidth * 2)
       }
       if (key === Directions.DOWN) {
-        userStore.updateYPosition(AppStore.cellSize)
+        userStore.updateYPosition(AppStore.cellSize + AppStore.borderWidth * 2)
       }
       if (key === Directions.LEFT) {
-        userStore.updateXPosition(-AppStore.cellSize)
+        userStore.updateXPosition(-AppStore.cellSize - AppStore.borderWidth * 2)
       }
       if (key == Directions.RIGHT) {
-        userStore.updateXPosition(AppStore.cellSize)
+        userStore.updateXPosition(AppStore.cellSize + AppStore.borderWidth * 2)
       }
     }
   }, [isKeyPressed])

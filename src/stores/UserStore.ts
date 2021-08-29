@@ -23,8 +23,8 @@ export class UserStore implements IUserStore {
   AppStore: IAppStore
 
   userPosition = {
-    x: 0,
-    y: 0,
+    x: 1,
+    y: 1,
   }
 
   updateXPosition(x: number): void {
