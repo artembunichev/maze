@@ -7,6 +7,7 @@ interface CellContainerProps {
   cellSize: number
   borderWidth: number
   border: IBorder
+  isExit: boolean
 }
 interface MazeContainerProps {
   mazeWidth: number
@@ -26,6 +27,7 @@ const CellContainer = styled.div<CellContainerProps>`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: ${(props) => props.isExit && `#00ff6a`};
   width: ${(props) => props.cellSize}px;
   height: ${(props) => props.cellSize}px;
   border-left: ${(props) => `${props.borderWidth}px solid ${props.border.left ? `#000000` : `#c5ecf1`}`};
@@ -45,7 +47,8 @@ export const Maze: FC = (): JSX.Element => {
         cellSize={mazeStore.cellSize}
         border={c.border}
         key={c.id}
-        borderWidth={AppStore.borderWidth}>
+        borderWidth={AppStore.borderWidth}
+        isExit={c.isExit}>
         {index}
       </CellContainer>
     )
