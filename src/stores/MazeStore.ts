@@ -96,7 +96,17 @@ export class MazeStore implements IMazeStore {
       })
     })
     //!Генерация выхода
-    arr[getRandom(0, this.width - 1)][getRandom(0, this.width - 1)].isExit = true
+    const index = getRandom(0, sideCells.length - 1)
+    const exitCell = sideCells[index]
+
+    arr.forEach((r) => {
+      r.forEach((el) => {
+        if (el.id === exitCell.id) {
+          el.isExit = true
+        }
+      })
+    })
+
     return arr
   }
 }
