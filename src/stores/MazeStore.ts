@@ -1,6 +1,5 @@
 import { makeAutoObservable } from 'mobx'
 import { IAppStore } from './AppStore'
-import uniqid from 'uniqid'
 import { getRandom } from '../utils/getRandom'
 
 export interface IBorder {
@@ -14,13 +13,14 @@ export interface ICell {
   id: string
   isExit: boolean
 }
+type ICellArray = Array<Array<ICell>>
 export interface IMazeStore {
   AppStore: IAppStore
   cellSize: number
   numberOfCells: number
   width: number
   height: number
-  cellsArray: Array<ICell>
+  cellsArray: ICellArray
 }
 
 export class MazeStore implements IMazeStore {
@@ -41,100 +41,55 @@ export class MazeStore implements IMazeStore {
   get numberOfCells(): number {
     return this.width * this.height
   }
-  get cellsArray(): Array<ICell> {
-    let arr: Array<ICell> = new Array(this.numberOfCells).fill({
-      border: {
-        left: false,
-        top: false,
-        right: false,
-        bottom: false,
-      },
-      isExit: false,
-    })
-    arr = arr.map((e) => {
-      return {
-        ...e,
-        id: uniqid(),
-      }
-    })
-    //Генерация границ для крайних клеток
-    //Левый верхний угол
-    arr[0].border = {
-      left: true,
-      top: true,
-      right: false,
-      bottom: false,
-    }
-    // Правый нижний угол
-    arr[this.numberOfCells - 1].border = {
-      right: true,
-      bottom: true,
-      left: false,
-      top: false,
-    }
-    //Левый нижний угол
-    arr[this.numberOfCells - this.width].border = {
-      left: true,
-      bottom: true,
-      top: false,
-      right: false,
-    }
-    //Правый верхний угол
-    arr[this.width - 1].border = {
-      top: true,
-      right: true,
-      left: false,
-      bottom: false,
-    }
-    //Индексы верха
-    for (let t = 1; t <= this.width - 2; t++) {
-      arr[t].border = {
-        top: true,
-        left: false,
-        right: false,
-        bottom: false,
+  get cellsArray(): ICellArray {
+    const arr: ICellArray = []
+    //!Заполение массива клеток
+    for (let x = 0; x < this.width; x++) {
+      arr[x] = []
+      for (let y = 0; y < this.width; y++) {
+        arr[x].push({
+          border: {
+            left: false,
+            top: false,
+            right: false,
+            bottom: false,
+          },
+          id: `${x}${y}`,
+          isExit: false,
+        })
       }
     }
-    //Индексы правой стороны
-    for (let r = this.width * 2 - 1; r <= this.width - 1 + this.width * (this.width - 2); r = r + this.width) {
-      arr[r].border = {
-        right: true,
-        left: false,
-        top: false,
-        bottom: false,
-      }
-    }
-    //Индексы низа
-    for (let b = this.numberOfCells - (this.width - 1); b <= this.numberOfCells - 2; b++) {
-      arr[b].border = {
-        bottom: true,
-        left: false,
-        top: false,
-        right: false,
-      }
-    }
-    //Индексы левой стороны
-    for (let l = this.width; l <= this.width * (this.width - 2); l = l + this.width) {
-      arr[l].border = {
-        left: true,
-        right: false,
-        top: false,
-        bottom: false,
-      }
-    }
-    //Генерация границ для оставшихся клеток
-    for (let i = 0; i <= this.numberOfCells - 1; i++) {
-      if (!arr[i]) {
-        arr[i].border = {
-          left: false,
-          top: false,
-          right: false,
-          bottom: false,
+    //!Заполение крайних клеток
+    arr.forEach((r, rowIndex) => {
+      r.forEach((el, index) => {
+        if (rowIndex === 0) {
+          el.border = {
+            ...el.border,
+            top: true,
+          }
         }
-      }
-    }
-    const random = getRandom(0, arr.length - 1)
-    arr[random].isExit = true
+        if (rowIndex === this.width - 1) {
+          el.border = {
+            ...el.border,
+            bottom: true,
+          }
+        }
+        if (index === 0) {
+          el.border = {
+            ...el.border,
+            left: true,
+          }
+        }
+        if (index === this.width - 1) {
+          el.border = {
+            ...el.border,
+            right: true,
+          }
+        }
+      })
+    })
+    //!Генерация выхода
+    arr[getRandom(0, this.width - 1)][getRandom(0, this.width - 1)].isExit = true
     return arr
   }
 }

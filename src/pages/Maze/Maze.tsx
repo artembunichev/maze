@@ -23,6 +23,9 @@ const MazeContainer = styled.div<MazeContainerProps>`
   flex-wrap: wrap;
   width: ${(props) => props.mazeWidth}px;
 `
+const CellRowContainer = styled.div`
+  display: flex;
+`
 const CellContainer = styled.div<CellContainerProps>`
   display: flex;
   justify-content: center;
@@ -41,16 +44,22 @@ export const Maze: FC = (): JSX.Element => {
   const bindCreateMazeStore = createMazeStore.bind(useStore())
   const [mazeStore] = useState(bindCreateMazeStore)
 
-  const cells = mazeStore.cellsArray.map((c, index) => {
+  const cells = mazeStore.cellsArray.map((r) => {
     return (
-      <CellContainer
-        cellSize={mazeStore.cellSize}
-        border={c.border}
-        key={c.id}
-        borderWidth={AppStore.borderWidth}
-        isExit={c.isExit}>
-        {index}
-      </CellContainer>
+      <CellRowContainer key={`${r[0].id + r[mazeStore.width - 1].id}`}>
+        {r.map((c, index) => {
+          return (
+            <CellContainer
+              isExit={c.isExit}
+              border={c.border}
+              borderWidth={AppStore.borderWidth}
+              cellSize={mazeStore.cellSize}
+              key={c.id}>
+              {index}
+            </CellContainer>
+          )
+        })}
+      </CellRowContainer>
     )
   })
 
