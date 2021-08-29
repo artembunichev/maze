@@ -2,6 +2,17 @@ import React, { FC, useState } from 'react'
 import styled from 'styled-components'
 import { useStore } from '../../stores/RootStore/RootStoreContext'
 import { IBorder } from '../../stores/MazeStore'
+import { observer } from 'mobx-react-lite'
+import { useKeyboard } from '../../hooks/useKeyboard'
+import { useEffect } from 'react'
+import { User } from './User'
+
+enum Directions {
+  UP = 'w',
+  DOWN = 's',
+  RIGHT = 'd',
+  LEFT = 'a',
+}
 
 interface CellContainerProps {
   cellSize: number
@@ -22,6 +33,7 @@ const MazeContainer = styled.div<MazeContainerProps>`
   display: flex;
   flex-wrap: wrap;
   width: ${(props) => props.mazeWidth}px;
+  position: relative;
 `
 const CellRowContainer = styled.div`
   display: flex;
@@ -39,10 +51,28 @@ const CellContainer = styled.div<CellContainerProps>`
   border-bottom: ${(props) => `${props.borderWidth}px solid ${props.border.bottom ? `#000000` : `#c5ecf1`}`};
 `
 
-export const Maze: FC = (): JSX.Element => {
-  const { AppStore, createMazeStore } = useStore()
+export const Maze: FC = observer((): JSX.Element => {
+  const { AppStore, createMazeStore, createUserStore } = useStore()
   const bindCreateMazeStore = createMazeStore.bind(useStore())
   const [mazeStore] = useState(bindCreateMazeStore)
+  const [userStore] = useState(createUserStore)
+  const [key, isKeyPressed] = useKeyboard()
+  useEffect(() => {
+    if (isKeyPressed) {
+      if (key === Directions.UP) {
+        userStore.updateYPosition(-mazeStore.cellSize)
+      }
+      if (key === Directions.DOWN) {
+        userStore.updateYPosition(mazeStore.cellSize)
+      }
+      if (key === Directions.LEFT) {
+        userStore.updateXPosition(-mazeStore.cellSize)
+      }
+      if (key == Directions.RIGHT) {
+        userStore.updateXPosition(mazeStore.cellSize)
+      }
+    }
+  }, [isKeyPressed])
 
   const cells = mazeStore.cellsArray.map((r) => {
     return (
@@ -66,8 +96,9 @@ export const Maze: FC = (): JSX.Element => {
   return (
     <MazeWrapper>
       <MazeContainer mazeWidth={(mazeStore.cellSize + AppStore.borderWidth * 2) * mazeStore.width}>
+        <User userSize={userStore.userSize} position={userStore.userPosition} />
         {cells}
       </MazeContainer>
     </MazeWrapper>
   )
-}
+})
