@@ -56,15 +56,11 @@ export const UserStoreContext = createContext<IUserStore | null>(null)
 
 export const Maze: FC = observer((): JSX.Element => {
   const { AppStore, createMazeStore, createUserStore } = useStore()
-
-  const bindCreateMazeStore = createMazeStore.bind(useStore())
-  const [mazeStore] = useState(bindCreateMazeStore)
-
-  const bindCreateUserStore = createUserStore.bind(useStore())(mazeStore)
-  const [userStore] = useState(bindCreateUserStore)
+  const [mazeStore] = useState(() => createMazeStore(AppStore))
+  const [userStore] = useState(() => createUserStore(AppStore, mazeStore))
 
   const [key, isKeyPressed] = useKeyboard()
-  
+
   useEffect(() => {
     if (isKeyPressed) {
       if (key === Directions.UP) {

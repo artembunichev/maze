@@ -5,18 +5,18 @@ import { IUserStore, UserStore } from '../UserStore'
 
 export interface IRootStore {
   AppStore: IAppStore
-  createMazeStore(): IMazeStore
-  createUserStore(MazeStore: IMazeStore): IUserStore
+  createMazeStore(AppStore: IAppStore): IMazeStore
+  createUserStore(AppStore: IAppStore, MazeStore: IMazeStore): IUserStore
 }
 
 export class RootStore implements IRootStore {
   AppStore = remotedev(new AppStore(), { name: 'AppStore' })
 
-  createMazeStore(): IMazeStore {
-    return remotedev(new MazeStore(this.AppStore), { name: 'MazeStore' })
+  createMazeStore(AppStore: IAppStore): IMazeStore {
+    return remotedev(new MazeStore(AppStore), { name: 'MazeStore' })
   }
 
-  createUserStore(MazeStore: IMazeStore): IUserStore {
-    return remotedev(new UserStore(this.AppStore, MazeStore), { name: 'UserStore' })
+  createUserStore(AppStore: IAppStore, MazeStore: IMazeStore): IUserStore {
+    return remotedev(new UserStore(AppStore, MazeStore), { name: 'UserStore' })
   }
 }
