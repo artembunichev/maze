@@ -6,6 +6,7 @@ export interface IAppStore {
   mazeHeight: number
   borderWidth: number
   cellSize: number
+  cellSizeWithBorder: number
 
   setNumberOfMazes(number: number): void
   setMazeWidth(width: number): void
@@ -22,8 +23,10 @@ export class AppStore implements IAppStore {
   mazeWidth = 6
   mazeHeight = 6
   cellSize = 50
-  
 
+  get cellSizeWithBorder(): number {
+    return this.cellSize + this.borderWidth * 2
+  }
   setNumberOfMazes(number: number): void {
     this.numberOfMazes = number
   }
