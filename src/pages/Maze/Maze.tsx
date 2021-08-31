@@ -8,10 +8,10 @@ import { User } from './User'
 import { IUserStore } from '../../stores/UserStore'
 
 enum Directions {
-  UP = 'w',
-  DOWN = 's',
-  RIGHT = 'd',
-  LEFT = 'a',
+  UP = 'KeyW',
+  DOWN = 'KeyS',
+  RIGHT = 'KeyD',
+  LEFT = 'KeyA',
 }
 
 interface CellContainerProps {

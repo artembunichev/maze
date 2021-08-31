@@ -8,7 +8,7 @@ export const useKeyboard = (): [string | null, boolean] => {
   useEffect(() => {
     const onKeyDown = (ev: KeyboardEvent): void => {
       setIsKeyPressed(false)
-      setKey(ev.key)
+      setKey(ev.code)
     }
     const onKeyUp = () => {
       setIsKeyPressed(true)
