@@ -64,7 +64,7 @@ export const Maze: FC = observer((): JSX.Element => {
   const [userStore] = useState(bindCreateUserStore)
 
   const [key, isKeyPressed] = useKeyboard()
-
+  
   useEffect(() => {
     if (isKeyPressed) {
       if (key === Directions.UP) {
@@ -85,7 +85,7 @@ export const Maze: FC = observer((): JSX.Element => {
   const cells = mazeStore.cellsArray.map((r) => {
     return (
       <CellRowContainer key={`${r[0].id + r[mazeStore.width - 1].id}`}>
-        {r.map((c, index) => {
+        {r.map((c) => {
           return (
             <CellContainer
               isExit={c.isExit}
@@ -93,7 +93,7 @@ export const Maze: FC = observer((): JSX.Element => {
               borderWidth={AppStore.borderWidth}
               cellSize={AppStore.cellSize}
               key={c.id}>
-              {index}
+              {c.id}
             </CellContainer>
           )
         })}
