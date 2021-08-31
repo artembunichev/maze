@@ -6,7 +6,7 @@ import { IUserStore, UserStore } from '../UserStore'
 export interface IRootStore {
   AppStore: IAppStore
   createMazeStore(): IMazeStore
-  createUserStore(): IUserStore
+  createUserStore(MazeStore: IMazeStore): IUserStore
 }
 
 export class RootStore implements IRootStore {
@@ -16,7 +16,7 @@ export class RootStore implements IRootStore {
     return remotedev(new MazeStore(this.AppStore), { name: 'MazeStore' })
   }
 
-  createUserStore(): IUserStore {
-    return remotedev(new UserStore(this.AppStore), { name: 'UserStore' })
+  createUserStore(MazeStore: IMazeStore): IUserStore {
+    return remotedev(new UserStore(this.AppStore, MazeStore), { name: 'UserStore' })
   }
 }

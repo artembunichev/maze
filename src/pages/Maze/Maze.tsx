@@ -1,11 +1,11 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, createContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { useStore } from '../../stores/RootStore/RootStoreContext'
-import { IBorder } from '../../stores/MazeStore'
+import { IBorder, IMazeStore } from '../../stores/MazeStore'
 import { observer } from 'mobx-react-lite'
 import { useKeyboard } from '../../hooks/useKeyboard'
-import { useEffect } from 'react'
 import { User } from './User'
+import { IUserStore } from '../../stores/UserStore'
 
 enum Directions {
   UP = 'w',
@@ -51,13 +51,16 @@ const CellContainer = styled.div<CellContainerProps>`
   border-bottom: ${(props) => `${props.borderWidth}px solid ${props.border.bottom ? `#000000` : `#c5ecf1`}`};
 `
 
+export const MazeStoreContext = createContext<IMazeStore | null>(null)
+export const UserStoreContext = createContext<IUserStore | null>(null)
+
 export const Maze: FC = observer((): JSX.Element => {
   const { AppStore, createMazeStore, createUserStore } = useStore()
 
   const bindCreateMazeStore = createMazeStore.bind(useStore())
-  const bindCreateUserStore = createUserStore.bind(useStore())
-
   const [mazeStore] = useState(bindCreateMazeStore)
+
+  const bindCreateUserStore = createUserStore.bind(useStore())(mazeStore)
   const [userStore] = useState(bindCreateUserStore)
 
   const [key, isKeyPressed] = useKeyboard()
@@ -99,11 +102,15 @@ export const Maze: FC = observer((): JSX.Element => {
   })
 
   return (
-    <MazeWrapper>
-      <MazeContainer mazeWidth={(AppStore.cellSize + AppStore.borderWidth * 2) * mazeStore.width}>
-        <User userSize={userStore.userSize} position={userStore.userPosition} />
-        {cells}
-      </MazeContainer>
-    </MazeWrapper>
+    <MazeStoreContext.Provider value={mazeStore}>
+      <UserStoreContext.Provider value={userStore}>
+        <MazeWrapper>
+          <MazeContainer mazeWidth={(AppStore.cellSize + AppStore.borderWidth * 2) * mazeStore.width}>
+            <User userSize={userStore.userSize} position={userStore.userPosition} />
+            {cells}
+          </MazeContainer>
+        </MazeWrapper>
+      </UserStoreContext.Provider>
+    </MazeStoreContext.Provider>
   )
 })
