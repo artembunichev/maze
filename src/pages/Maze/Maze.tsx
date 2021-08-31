@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { useStore } from '../../stores/RootStore/RootStoreContext'
 import { IBorder, IMazeStore } from '../../stores/MazeStore'
 import { observer } from 'mobx-react-lite'
-import { useKeyboard } from '../../hooks/useKeyboard'
 import { User } from './User'
 import { IUserStore } from '../../stores/UserStore'
 
@@ -59,24 +58,26 @@ export const Maze: FC = observer((): JSX.Element => {
   const [mazeStore] = useState(() => createMazeStore(AppStore))
   const [userStore] = useState(() => createUserStore(AppStore, mazeStore))
 
-  const [key, isKeyPressed] = useKeyboard()
-
   useEffect(() => {
-    if (isKeyPressed) {
-      if (key === Directions.UP) {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.code === Directions.UP) {
         userStore.updateYPosition(-AppStore.cellSize - AppStore.borderWidth * 2)
       }
-      if (key === Directions.DOWN) {
+      if (e.code === Directions.DOWN) {
         userStore.updateYPosition(AppStore.cellSize + AppStore.borderWidth * 2)
       }
-      if (key === Directions.LEFT) {
+      if (e.code === Directions.LEFT) {
         userStore.updateXPosition(-AppStore.cellSize - AppStore.borderWidth * 2)
       }
-      if (key == Directions.RIGHT) {
+      if (e.code == Directions.RIGHT) {
         userStore.updateXPosition(AppStore.cellSize + AppStore.borderWidth * 2)
       }
     }
-  }, [isKeyPressed])
+
+    window.addEventListener('keypress', handleKeyPress)
+    
+    return () => window.removeEventListener('keypress', handleKeyPress)
+  }, [])
 
   const cells = mazeStore.cellsArray.map((r) => {
     return (
