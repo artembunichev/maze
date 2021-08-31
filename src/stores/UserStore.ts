@@ -13,6 +13,7 @@ export interface IUserStore {
   userPosition: IPosition
   userSize: number
   currentCell: ICell
+  currentCellIndexes: [number, number]
 
   updateXPosition(x: number): void
   updateYPosition(y: number): void
@@ -21,8 +22,7 @@ export interface IUserStore {
 export class UserStore implements IUserStore {
   AppStore: IAppStore
   MazeStore: IMazeStore
-  userPosition: IPosition
-  currentCell: ICell
+  currentCellIndexes: [number, number]
 
   constructor(AppStore: IAppStore, MazeStore: IMazeStore) {
     makeAutoObservable(this)
@@ -35,21 +35,44 @@ export class UserStore implements IUserStore {
     }
     const indexX = randomIndex()
     const indexY = randomIndex()
-    this.userPosition = {
-      x: indexX * this.AppStore.cellSizeWithBorder + this.AppStore.borderWidth,
-      y: indexY * this.AppStore.cellSizeWithBorder + this.AppStore.borderWidth,
-    }
-    this.currentCell = this.MazeStore.cellsArray[indexY][indexX]
+    this.currentCellIndexes = [indexY, indexX]
   }
 
   updateXPosition(x: number): void {
-    this.userPosition.x += x
+    if (x < 0) {
+      if (!this.currentCell.border.left) {
+        this.currentCellIndexes[1]--
+      }
+    }
+    if (x > 0) {
+      if (!this.currentCell.border.right) {
+        this.currentCellIndexes[1]++
+      }
+    }
   }
   updateYPosition(y: number): void {
-    this.userPosition.y += y
+    if (y < 0) {
+      if (!this.currentCell.border.top) {
+        this.currentCellIndexes[0]--
+      }
+    }
+    if (y > 0) {
+      if (!this.currentCell.border.bottom) {
+        this.currentCellIndexes[0]++
+      }
+    }
   }
 
   get userSize(): number {
     return this.AppStore.cellSize
+  }
+  get userPosition(): IPosition {
+    return {
+      x: this.currentCellIndexes[1] * this.AppStore.cellSizeWithBorder + this.AppStore.borderWidth,
+      y: this.currentCellIndexes[0] * this.AppStore.cellSizeWithBorder + this.AppStore.borderWidth,
+    }
+  }
+  get currentCell(): ICell {
+    return this.MazeStore.cellsArray[this.currentCellIndexes[0]][this.currentCellIndexes[1]]
   }
 }
