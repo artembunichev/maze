@@ -19,6 +19,11 @@ export interface IUserStore {
 }
 
 export class UserStore implements IUserStore {
+  AppStore: IAppStore
+  MazeStore: IMazeStore
+  userPosition: IPosition
+  currentCell: ICell
+
   constructor(AppStore: IAppStore, MazeStore: IMazeStore) {
     makeAutoObservable(this)
     this.AppStore = AppStore
@@ -34,10 +39,8 @@ export class UserStore implements IUserStore {
       x: indexX * this.AppStore.cellSizeWithBorder + this.AppStore.borderWidth,
       y: indexY * this.AppStore.cellSizeWithBorder + this.AppStore.borderWidth,
     }
+    this.currentCell = this.MazeStore.cellsArray[indexY][indexX]
   }
-  AppStore: IAppStore
-  MazeStore: IMazeStore
-  userPosition: IPosition
 
   updateXPosition(x: number): void {
     this.userPosition.x += x
@@ -48,8 +51,5 @@ export class UserStore implements IUserStore {
 
   get userSize(): number {
     return this.AppStore.cellSize
-  }
-  get currentCell(): ICell {
-    return this.MazeStore.cellsArray[0][0]
   }
 }
