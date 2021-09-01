@@ -13,21 +13,82 @@ export interface ICell {
   id: string
   isExit: boolean
 }
+export interface IPosition {
+  x: number
+  y: number
+}
+
 type ICellArray = Array<Array<ICell>>
+
 export interface IMazeStore {
   AppStore: IAppStore
   numberOfCells: number
   width: number
   height: number
   cellsArray: ICellArray
+  userPosition: IPosition
+  userSize: number
+  currentCell: ICell
+  currentCellIndexes: [number, number]
+
+  updateXPosition(x: number): void
+  updateYPosition(y: number): void
 }
 
 export class MazeStore implements IMazeStore {
+  AppStore: IAppStore
+  currentCellIndexes: [number, number]
+
   constructor(AppStore: IAppStore) {
     makeAutoObservable(this)
     this.AppStore = AppStore
+
+    //!УСТАНОВКА СТАРТОВОЙ ПОЗИЦИИ
+    const randomIndex = (): number => {
+      return getRandom(0, this.cellsArray.length - 1)
+    }
+    const indexX = randomIndex()
+    const indexY = randomIndex()
+    this.currentCellIndexes = [indexY, indexX]
   }
-  AppStore: IAppStore
+
+  updateXPosition(x: number): void {
+    if (x < 0) {
+      if (!this.currentCell.border.left) {
+        this.currentCellIndexes[1]--
+      }
+    }
+    if (x > 0) {
+      if (!this.currentCell.border.right) {
+        this.currentCellIndexes[1]++
+      }
+    }
+  }
+  updateYPosition(y: number): void {
+    if (y < 0) {
+      if (!this.currentCell.border.top) {
+        this.currentCellIndexes[0]--
+      }
+    }
+    if (y > 0) {
+      if (!this.currentCell.border.bottom) {
+        this.currentCellIndexes[0]++
+      }
+    }
+  }
+
+  get userSize(): number {
+    return this.AppStore.cellSize
+  }
+  get userPosition(): IPosition {
+    return {
+      x: this.currentCellIndexes[1] * this.AppStore.cellSizeWithBorder + this.AppStore.borderWidth,
+      y: this.currentCellIndexes[0] * this.AppStore.cellSizeWithBorder + this.AppStore.borderWidth,
+    }
+  }
+  get currentCell(): ICell {
+    return this.cellsArray[this.currentCellIndexes[0]][this.currentCellIndexes[1]]
+  }
 
   get width(): number {
     return this.AppStore.mazeWidth

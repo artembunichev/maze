@@ -4,7 +4,6 @@ import { useStore } from '../../stores/RootStore/RootStoreContext'
 import { IBorder, IMazeStore } from '../../stores/MazeStore'
 import { observer } from 'mobx-react-lite'
 import { User } from './User'
-import { IUserStore } from '../../stores/UserStore'
 
 enum Directions {
   UP = 'KeyW',
@@ -51,31 +50,30 @@ const CellContainer = styled.div<CellContainerProps>`
 `
 
 export const MazeStoreContext = createContext<IMazeStore | null>(null)
-export const UserStoreContext = createContext<IUserStore | null>(null)
 
 export const Maze: FC = observer((): JSX.Element => {
-  const { AppStore, createMazeStore, createUserStore } = useStore()
-  const [mazeStore] = useState(() => createMazeStore(AppStore))
-  const [userStore] = useState(() => createUserStore(AppStore, mazeStore))
+  const rootStore = useStore()
+  const { AppStore, createMazeStore } = rootStore
+  const [mazeStore] = useState(() => createMazeStore.bind(rootStore)())
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.code === Directions.UP) {
-        userStore.updateYPosition(-AppStore.cellSize - AppStore.borderWidth * 2)
+        mazeStore.updateYPosition(-AppStore.cellSize - AppStore.borderWidth * 2)
       }
       if (e.code === Directions.DOWN) {
-        userStore.updateYPosition(AppStore.cellSize + AppStore.borderWidth * 2)
+        mazeStore.updateYPosition(AppStore.cellSize + AppStore.borderWidth * 2)
       }
       if (e.code === Directions.LEFT) {
-        userStore.updateXPosition(-AppStore.cellSize - AppStore.borderWidth * 2)
+        mazeStore.updateXPosition(-AppStore.cellSize - AppStore.borderWidth * 2)
       }
       if (e.code == Directions.RIGHT) {
-        userStore.updateXPosition(AppStore.cellSize + AppStore.borderWidth * 2)
+        mazeStore.updateXPosition(AppStore.cellSize + AppStore.borderWidth * 2)
       }
     }
 
     window.addEventListener('keypress', handleKeyPress)
-    
+
     return () => window.removeEventListener('keypress', handleKeyPress)
   }, [])
 
@@ -100,14 +98,12 @@ export const Maze: FC = observer((): JSX.Element => {
 
   return (
     <MazeStoreContext.Provider value={mazeStore}>
-      <UserStoreContext.Provider value={userStore}>
-        <MazeWrapper>
-          <MazeContainer mazeWidth={(AppStore.cellSize + AppStore.borderWidth * 2) * mazeStore.width}>
-            <User userSize={userStore.userSize} position={userStore.userPosition} />
-            {cells}
-          </MazeContainer>
-        </MazeWrapper>
-      </UserStoreContext.Provider>
+      <MazeWrapper>
+        <MazeContainer mazeWidth={(AppStore.cellSize + AppStore.borderWidth * 2) * mazeStore.width}>
+          <User userSize={mazeStore.userSize} position={mazeStore.userPosition} />
+          {cells}
+        </MazeContainer>
+      </MazeWrapper>
     </MazeStoreContext.Provider>
   )
 })
