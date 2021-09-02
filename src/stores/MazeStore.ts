@@ -38,6 +38,8 @@ export interface IMazeStore {
 export class MazeStore implements IMazeStore {
   AppStore: IAppStore
   currentCellIndexes: [number, number]
+  startPosition: [number, number]
+  cellsArray: ICellArray
 
   constructor(AppStore: IAppStore) {
     makeAutoObservable(this)
@@ -45,11 +47,82 @@ export class MazeStore implements IMazeStore {
 
     //!УСТАНОВКА СТАРТОВОЙ ПОЗИЦИИ
     const randomIndex = (): number => {
-      return getRandom(0, this.cellsArray.length - 1)
+      return getRandom(0, this.AppStore.mazeWidth - 1)
     }
     const indexX = randomIndex()
     const indexY = randomIndex()
     this.currentCellIndexes = [indexY, indexX]
+
+    const arr: ICellArray = []
+    //!Заполение массива клеток
+    for (let x = 0; x < this.width; x++) {
+      arr[x] = []
+      for (let y = 0; y < this.width; y++) {
+        arr[x].push({
+          border: {
+            left: false,
+            top: false,
+            right: false,
+            bottom: false,
+          },
+          id: `${x}${y}`,
+          isExit: false,
+        })
+      }
+    }
+
+    //!Заполение крайних клеток
+    arr.forEach((r, rowIndex) => {
+      r.forEach((el, index) => {
+        if (rowIndex === 0) {
+          el.border = {
+            ...el.border,
+            top: true,
+          }
+        }
+        if (rowIndex === this.width - 1) {
+          el.border = {
+            ...el.border,
+            bottom: true,
+          }
+        }
+        if (index === 0) {
+          el.border = {
+            ...el.border,
+            left: true,
+          }
+        }
+        if (index === this.width - 1) {
+          el.border = {
+            ...el.border,
+            right: true,
+          }
+        }
+      })
+    })
+    const sideCells = arr.reduce((acc, r, rowIndex) => {
+      r.forEach((el, index) => {
+        if (index === 0 || index === this.width - 1 || rowIndex === 0 || rowIndex === this.width - 1) {
+          acc.push(el)
+        }
+      })
+      return acc
+    }, [])
+    //!Генерация выхода
+    let index = getRandom(0, sideCells.length - 1)
+    while (sideCells[index].id === arr[this.currentCellIndexes[0]][this.currentCellIndexes[1]].id) {
+      index = getRandom(0, sideCells.length - 1)
+    }
+    const exitCell = sideCells[index]
+
+    arr.forEach((r) => {
+      r.forEach((el) => {
+        if (el.id === exitCell.id) {
+          el.isExit = true
+        }
+      })
+    })
+    this.cellsArray = arr
   }
 
   updateXPosition(x: number): void {
@@ -98,76 +171,5 @@ export class MazeStore implements IMazeStore {
   }
   get numberOfCells(): number {
     return this.width * this.height
-  }
-  get cellsArray(): ICellArray {
-    const arr: ICellArray = []
-    //!Заполение массива клеток
-    for (let x = 0; x < this.width; x++) {
-      arr[x] = []
-      for (let y = 0; y < this.width; y++) {
-        arr[x].push({
-          border: {
-            left: false,
-            top: false,
-            right: false,
-            bottom: false,
-          },
-          id: `${x}${y}`,
-          isExit: false,
-        })
-      }
-    }
-
-    const sideCells = arr.reduce((acc, r, rowIndex) => {
-      r.forEach((el, index) => {
-        if (index === 0 || index === this.width - 1 || rowIndex === 0 || rowIndex === this.width - 1) {
-          acc.push(el)
-        }
-      })
-      return acc
-    }, [])
-
-    //!Заполение крайних клеток
-    arr.forEach((r, rowIndex) => {
-      r.forEach((el, index) => {
-        if (rowIndex === 0) {
-          el.border = {
-            ...el.border,
-            top: true,
-          }
-        }
-        if (rowIndex === this.width - 1) {
-          el.border = {
-            ...el.border,
-            bottom: true,
-          }
-        }
-        if (index === 0) {
-          el.border = {
-            ...el.border,
-            left: true,
-          }
-        }
-        if (index === this.width - 1) {
-          el.border = {
-            ...el.border,
-            right: true,
-          }
-        }
-      })
-    })
-    //!Генерация выхода
-    const index = getRandom(0, sideCells.length - 1)
-    const exitCell = sideCells[index]
-
-    arr.forEach((r) => {
-      r.forEach((el) => {
-        if (el.id === exitCell.id) {
-          el.isExit = true
-        }
-      })
-    })
-
-    return arr
   }
 }
