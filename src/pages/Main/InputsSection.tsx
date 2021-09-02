@@ -6,7 +6,6 @@ import { useStore } from '../../stores/RootStore/RootStoreContext'
 const InputSectionContainer = styled.div``
 const MazeSizeInputsContainer = styled.div``
 const MazeSizeInput = styled.input``
-const NumberOfMazesInput = styled.input``
 
 export const InputsSection: FC = observer((): JSX.Element => {
   const { AppStore } = useStore()
@@ -25,15 +24,7 @@ export const InputsSection: FC = observer((): JSX.Element => {
           value={AppStore.mazeWidth}
           onChange={(e) => setValueFromInput(e, AppStore.setMazeWidth)}
         />
-        <MazeSizeInput
-          value={AppStore.mazeHeight}
-          onChange={(e) => setValueFromInput(e, AppStore.setMazeHeight)}
-        />
       </MazeSizeInputsContainer>
-      <NumberOfMazesInput
-        value={AppStore.numberOfMazes}
-        onChange={(e) => setValueFromInput(e, AppStore.setNumberOfMazes)}
-      />
     </InputSectionContainer>
   )
 })
