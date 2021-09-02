@@ -20,10 +20,7 @@ export const InputsSection: FC = observer((): JSX.Element => {
   return (
     <InputSectionContainer>
       <MazeSizeInputsContainer>
-        <MazeSizeInput
-          value={AppStore.mazeWidth}
-          onChange={(e) => setValueFromInput(e, AppStore.setMazeWidth)}
-        />
+        <MazeSizeInput value={AppStore.mazeSize} onChange={(e) => setValueFromInput(e, AppStore.setMazeSize)} />
       </MazeSizeInputsContainer>
     </InputSectionContainer>
   )

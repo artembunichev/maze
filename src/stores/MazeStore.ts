@@ -23,7 +23,7 @@ type ICellArray = Array<Array<ICell>>
 export interface IMazeStore {
   AppStore: IAppStore
   numberOfCells: number
-  width: number
+  size: number
   cellsArray: ICellArray
   userPosition: IPosition
   userSize: number
@@ -46,7 +46,7 @@ export class MazeStore implements IMazeStore {
 
     //!УСТАНОВКА СТАРТОВОЙ ПОЗИЦИИ
     const randomIndex = (): number => {
-      return getRandom(0, this.AppStore.mazeWidth - 1)
+      return getRandom(0, this.AppStore.mazeSize - 1)
     }
     const indexX = randomIndex()
     const indexY = randomIndex()
@@ -54,9 +54,9 @@ export class MazeStore implements IMazeStore {
 
     const arr: ICellArray = []
     //!Заполение массива клеток
-    for (let x = 0; x < this.width; x++) {
+    for (let x = 0; x < this.size; x++) {
       arr[x] = []
-      for (let y = 0; y < this.width; y++) {
+      for (let y = 0; y < this.size; y++) {
         arr[x].push({
           border: {
             left: false,
@@ -79,7 +79,7 @@ export class MazeStore implements IMazeStore {
             top: true,
           }
         }
-        if (rowIndex === this.width - 1) {
+        if (rowIndex === this.size - 1) {
           el.border = {
             ...el.border,
             bottom: true,
@@ -91,7 +91,7 @@ export class MazeStore implements IMazeStore {
             left: true,
           }
         }
-        if (index === this.width - 1) {
+        if (index === this.size - 1) {
           el.border = {
             ...el.border,
             right: true,
@@ -101,7 +101,7 @@ export class MazeStore implements IMazeStore {
     })
     const sideCells = arr.reduce((acc, r, rowIndex) => {
       r.forEach((el, index) => {
-        if (index === 0 || index === this.width - 1 || rowIndex === 0 || rowIndex === this.width - 1) {
+        if (index === 0 || index === this.size - 1 || rowIndex === 0 || rowIndex === this.size - 1) {
           acc.push(el)
         }
       })
@@ -162,10 +162,10 @@ export class MazeStore implements IMazeStore {
     return this.cellsArray[this.currentCellIndexes[0]][this.currentCellIndexes[1]]
   }
 
-  get width(): number {
-    return this.AppStore.mazeWidth
+  get size(): number {
+    return this.AppStore.mazeSize
   }
   get numberOfCells(): number {
-    return Math.pow(this.width, 2)
+    return Math.pow(this.size, 2)
   }
 }

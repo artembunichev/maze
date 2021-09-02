@@ -79,7 +79,7 @@ export const Maze: FC = observer((): JSX.Element => {
 
   const cells = mazeStore.cellsArray.map((r) => {
     return (
-      <CellRowContainer key={`${r[0].id + r[mazeStore.width - 1].id}`}>
+      <CellRowContainer key={`${r[0].id + r[mazeStore.size - 1].id}`}>
         {r.map((c) => {
           return (
             <CellContainer
@@ -99,7 +99,7 @@ export const Maze: FC = observer((): JSX.Element => {
   return (
     <MazeStoreContext.Provider value={mazeStore}>
       <MazeWrapper>
-        <MazeContainer mazeWidth={(AppStore.cellSize + AppStore.borderWidth * 2) * mazeStore.width}>
+        <MazeContainer mazeWidth={(AppStore.cellSize + AppStore.borderWidth * 2) * mazeStore.size}>
           <User userSize={mazeStore.userSize} position={mazeStore.userPosition} />
           {cells}
         </MazeContainer>
