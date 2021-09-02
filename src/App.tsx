@@ -1,9 +1,10 @@
-import React, { FC, useEffect } from 'react'
-import { Route, useHistory } from 'react-router-dom'
+import { observer } from 'mobx-react-lite'
+import React, { FC } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 import { Header } from './components/Header'
 import { Main } from './pages/Main'
 import { MazePage } from './pages/Maze'
+import { useStore } from './stores/RootStore/RootStoreContext'
 
 const GlobalStyles = createGlobalStyle`
   body {
@@ -14,20 +15,16 @@ const GlobalStyles = createGlobalStyle`
 `
 const AppContainer = styled.div``
 
-export const App: FC = (): JSX.Element => {
-  const history = useHistory()
-  useEffect(() => {
-    history.push('/')
-  }, [])
+export const App: FC = observer((): JSX.Element => {
+  const { AppStore } = useStore()
 
   return (
     <>
       <GlobalStyles />
       <AppContainer>
         <Header />
-        <Route exact path={'/'} component={Main} />
-        <Route exact path={'/maze'} component={MazePage} />
+        {AppStore.isGame ? <MazePage /> : <Main />}
       </AppContainer>
     </>
   )
-}
+})

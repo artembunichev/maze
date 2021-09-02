@@ -1,17 +1,17 @@
 import React, { FC } from 'react'
-import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { InputsSection } from './InputsSection'
+import { useStore } from '../../stores/RootStore/RootStoreContext'
 
 const MainContainer = styled.div``
 
 const CreateMazesButton = styled.button``
 
 export const Main: FC = (): JSX.Element => {
-  const history = useHistory()
+  const { AppStore } = useStore()
 
   const goToMazePage = () => {
-    history.push('/maze')
+    AppStore.setIsGame(true)
   }
 
   return (

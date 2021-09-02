@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 
 export interface IAppStore {
+  isGame: boolean
   numberOfMazes: number
   mazeWidth: number
   mazeHeight: number
@@ -8,6 +9,7 @@ export interface IAppStore {
   cellSize: number
   cellSizeWithBorder: number
 
+  setIsGame(value: boolean): void
   setNumberOfMazes(number: number): void
   setMazeWidth(width: number): void
   setMazeHeight(height: number): void
@@ -18,6 +20,7 @@ export class AppStore implements IAppStore {
     makeAutoObservable(this)
   }
 
+  isGame = false
   numberOfMazes = 3
   borderWidth = 1
   mazeWidth = 6
@@ -26,6 +29,9 @@ export class AppStore implements IAppStore {
 
   get cellSizeWithBorder(): number {
     return this.cellSize + this.borderWidth * 2
+  }
+  setIsGame(value: boolean): void {
+    this.isGame = value
   }
   setNumberOfMazes(number: number): void {
     this.numberOfMazes = number
