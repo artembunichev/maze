@@ -73,11 +73,13 @@ export const Maze: FC<MazeProps> = observer(({ store }): JSX.Element => {
         store.updateXPosition(AppStore.cellSize + AppStore.borderWidth * 2)
       }
     }
-
-    window.addEventListener('keypress', handleKeyPress)
+    if (!store.isWin) {
+      window.addEventListener('keypress', handleKeyPress)
+    }
 
     return () => window.removeEventListener('keypress', handleKeyPress)
-  }, [])
+  }, [store.isWin])
+
   useEffect(() => {
     if (store.currentCell.isExit) {
       store.setIsWin(true)
