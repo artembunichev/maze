@@ -22,6 +22,7 @@ type ICellArray = Array<Array<ICell>>
 
 export interface IMazeStore {
   AppStore: IAppStore
+  isWin: boolean
   numberOfCells: number
   size: number
   cellsArray: ICellArray
@@ -32,6 +33,7 @@ export interface IMazeStore {
 
   updateXPosition(x: number): void
   updateYPosition(y: number): void
+  setIsWin(value: boolean): void
 }
 
 export class MazeStore implements IMazeStore {
@@ -124,6 +126,11 @@ export class MazeStore implements IMazeStore {
     this.cellsArray = arr
   }
 
+  isWin = false
+
+  setIsWin(value: boolean): void {
+    this.isWin = value
+  }
   updateXPosition(x: number): void {
     if (x < 0) {
       if (!this.currentCell.border.left) {

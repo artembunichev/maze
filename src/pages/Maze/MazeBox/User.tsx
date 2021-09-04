@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { IPosition } from '../../stores/MazeStore'
+import { IPosition } from '../../../stores/MazeStore'
 
 interface UserProps {
   position: IPosition

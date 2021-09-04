@@ -1,12 +1,13 @@
 import React, { FC, createContext, useEffect } from 'react'
 import styled from 'styled-components'
-import { useStore } from '../../stores/RootStore/RootStoreContext'
-import { IBorder, IMazeStore } from '../../stores/MazeStore'
+import { useStore } from '../../../stores/RootStore/RootStoreContext'
+import { IBorder, IMazeStore } from '../../../stores/MazeStore'
 import { observer } from 'mobx-react-lite'
 import { User } from './User'
 
 interface MazeProps {
   store: IMazeStore
+  updateStore: React.Dispatch<React.SetStateAction<IMazeStore>>
 }
 enum Directions {
   UP = 'KeyW',
@@ -55,8 +56,7 @@ const CellContainer = styled.div<CellContainerProps>`
 export const MazeStoreContext = createContext<IMazeStore | null>(null)
 
 export const Maze: FC<MazeProps> = observer(({ store }): JSX.Element => {
-  const rootStore = useStore()
-  const { AppStore } = rootStore
+  const { AppStore } = useStore()
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -78,6 +78,11 @@ export const Maze: FC<MazeProps> = observer(({ store }): JSX.Element => {
 
     return () => window.removeEventListener('keypress', handleKeyPress)
   }, [])
+  useEffect(() => {
+    if (store.currentCell.isExit) {
+      store.setIsWin(true)
+    }
+  }, [store.currentCell])
 
   const cells = store.cellsArray.map((r) => {
     return (
