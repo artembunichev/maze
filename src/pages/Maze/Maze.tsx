@@ -1,10 +1,13 @@
-import React, { FC, useState, createContext, useEffect } from 'react'
+import React, { FC, createContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { useStore } from '../../stores/RootStore/RootStoreContext'
 import { IBorder, IMazeStore } from '../../stores/MazeStore'
 import { observer } from 'mobx-react-lite'
 import { User } from './User'
 
+interface MazeProps {
+  store: IMazeStore
+}
 enum Directions {
   UP = 'KeyW',
   DOWN = 'KeyS',
@@ -51,24 +54,23 @@ const CellContainer = styled.div<CellContainerProps>`
 
 export const MazeStoreContext = createContext<IMazeStore | null>(null)
 
-export const Maze: FC = observer((): JSX.Element => {
+export const Maze: FC<MazeProps> = observer(({ store }): JSX.Element => {
   const rootStore = useStore()
-  const { AppStore, createMazeStore } = rootStore
-  const [mazeStore] = useState(() => createMazeStore.bind(rootStore)())
+  const { AppStore } = rootStore
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.code === Directions.UP) {
-        mazeStore.updateYPosition(-AppStore.cellSize - AppStore.borderWidth * 2)
+        store.updateYPosition(-AppStore.cellSize - AppStore.borderWidth * 2)
       }
       if (e.code === Directions.DOWN) {
-        mazeStore.updateYPosition(AppStore.cellSize + AppStore.borderWidth * 2)
+        store.updateYPosition(AppStore.cellSize + AppStore.borderWidth * 2)
       }
       if (e.code === Directions.LEFT) {
-        mazeStore.updateXPosition(-AppStore.cellSize - AppStore.borderWidth * 2)
+        store.updateXPosition(-AppStore.cellSize - AppStore.borderWidth * 2)
       }
       if (e.code == Directions.RIGHT) {
-        mazeStore.updateXPosition(AppStore.cellSize + AppStore.borderWidth * 2)
+        store.updateXPosition(AppStore.cellSize + AppStore.borderWidth * 2)
       }
     }
 
@@ -77,9 +79,9 @@ export const Maze: FC = observer((): JSX.Element => {
     return () => window.removeEventListener('keypress', handleKeyPress)
   }, [])
 
-  const cells = mazeStore.cellsArray.map((r) => {
+  const cells = store.cellsArray.map((r) => {
     return (
-      <CellRowContainer key={`${r[0].id + r[mazeStore.size - 1].id}`}>
+      <CellRowContainer key={`${r[0].id + r[store.size - 1].id}`}>
         {r.map((c) => {
           return (
             <CellContainer
@@ -97,10 +99,10 @@ export const Maze: FC = observer((): JSX.Element => {
   })
 
   return (
-    <MazeStoreContext.Provider value={mazeStore}>
+    <MazeStoreContext.Provider value={store}>
       <MazeWrapper>
-        <MazeContainer mazeWidth={(AppStore.cellSize + AppStore.borderWidth * 2) * mazeStore.size}>
-          <User userSize={mazeStore.userSize} position={mazeStore.userPosition} />
+        <MazeContainer mazeWidth={(AppStore.cellSize + AppStore.borderWidth * 2) * store.size}>
+          <User userSize={store.userSize} position={store.userPosition} />
           {cells}
         </MazeContainer>
       </MazeWrapper>
