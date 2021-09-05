@@ -29,7 +29,7 @@ export const IsWin: FC<IsWinProps> = ({ store, updateStore }): JSX.Element => {
 
   const checkAndSetSize = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = Number(e.target.value)
-    if (!isNaN(value)) {
+    if (!isNaN(value) && value !== 1) {
       setNewMazeSize(value)
     }
   }
