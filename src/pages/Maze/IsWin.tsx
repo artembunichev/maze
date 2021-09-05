@@ -29,15 +29,17 @@ export const IsWin: FC<IsWinProps> = ({ store, updateStore }): JSX.Element => {
 
   const checkAndSetSize = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = Number(e.target.value)
-    if (!isNaN(value) && value !== 1) {
+    if (!isNaN(value)) {
       setNewMazeSize(value)
     }
   }
 
   const restartGame = () => {
-    AppStore.setMazeSize(newMazeSize)
-    updateStore(() => rootStore.createMazeStore.bind(rootStore)())
-    store.setIsWin(false)
+    if (newMazeSize !== 1 && newMazeSize <= 30) {
+      AppStore.setMazeSize(newMazeSize)
+      updateStore(() => rootStore.createMazeStore.bind(rootStore)())
+      store.setIsWin(false)
+    }
   }
 
   return (

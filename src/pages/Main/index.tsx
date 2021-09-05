@@ -11,8 +11,10 @@ export const Main: FC = (): JSX.Element => {
   const { AppStore } = useStore()
   const [mazeSize, setMazeSize] = useState<number>(AppStore.mazeSize)
   const goToMazePage = () => {
-    AppStore.setMazeSize(mazeSize)
-    AppStore.setIsGame(true)
+    if (mazeSize !== 1 && mazeSize <= 30) {
+      AppStore.setIsGame(true)
+      AppStore.setMazeSize(mazeSize)
+    }
   }
 
   return (
