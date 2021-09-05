@@ -7,7 +7,6 @@ import { User } from './User'
 
 interface MazeProps {
   store: IMazeStore
-  updateStore: React.Dispatch<React.SetStateAction<IMazeStore>>
 }
 enum Directions {
   UP = 'KeyW',

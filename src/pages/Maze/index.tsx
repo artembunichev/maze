@@ -11,10 +11,11 @@ export const MazePage: FC = observer((): JSX.Element => {
   const rootStore = useStore()
   const { createMazeStore } = rootStore
   const [mazeStore, updateMazeStore] = useState(() => createMazeStore.bind(rootStore)())
+
   return (
     <MazePageContainer>
-      <Maze store={mazeStore} updateStore={updateMazeStore} />
-      {mazeStore.isWin && <IsWin />}
+      <Maze store={mazeStore} />
+      {mazeStore.isWin && <IsWin store={mazeStore} updateStore={updateMazeStore} />}
     </MazePageContainer>
   )
 })
