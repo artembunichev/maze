@@ -12,10 +12,17 @@ const MazeSizeInputsContainer = styled.div``
 const MazeSizeInput = styled.input``
 
 export const InputsSection: FC<InputSectionProps> = observer(({ mazeSize, setMazeSize }): JSX.Element => {
+  const checkAndSetSize = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const value = Number(e.target.value)
+    if (!isNaN(value)) {
+      setMazeSize(value)
+    }
+  }
+
   return (
     <InputSectionContainer>
       <MazeSizeInputsContainer>
-        <MazeSizeInput value={mazeSize} onChange={(e) => setMazeSize(Number(e.target.value))} />
+        <MazeSizeInput value={mazeSize} onChange={checkAndSetSize} />
       </MazeSizeInputsContainer>
     </InputSectionContainer>
   )

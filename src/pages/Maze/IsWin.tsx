@@ -8,7 +8,15 @@ interface IsWinProps {
   updateStore: React.Dispatch<React.SetStateAction<IMazeStore>>
 }
 
-const IsWinContainer = styled.div``
+const IsWinContainer = styled.div`
+  position: absolute;
+  z-index: 9999;
+  left: 0px;
+  right: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #2e2e2e;
+`
 const IsWinTitle = styled.div``
 const RestartGameButton = styled.button``
 const RestartDescription = styled.div``
@@ -18,6 +26,13 @@ export const IsWin: FC<IsWinProps> = ({ store, updateStore }): JSX.Element => {
   const rootStore = useStore()
   const { AppStore } = rootStore
   const [newMazeSize, setNewMazeSize] = useState<number>(AppStore.mazeSize)
+
+  const checkAndSetSize = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const value = Number(e.target.value)
+    if (!isNaN(value)) {
+      setNewMazeSize(value)
+    }
+  }
 
   const restartGame = () => {
     AppStore.setMazeSize(newMazeSize)
@@ -30,7 +45,7 @@ export const IsWin: FC<IsWinProps> = ({ store, updateStore }): JSX.Element => {
       <IsWinTitle>Win!</IsWinTitle>
       <RestartDescription>
         Generate new maze width
-        <NewMazeSizeInput value={newMazeSize} onChange={(e) => setNewMazeSize(Number(e.target.value))} />
+        <NewMazeSizeInput value={newMazeSize} onChange={checkAndSetSize} />
         cells
       </RestartDescription>
       <RestartGameButton onClick={restartGame}>Generate new Maze</RestartGameButton>
