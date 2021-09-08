@@ -25,6 +25,7 @@ const IsWinContainer = styled.div<IsWinPopupProps>`
   background-color: #5a5a5a7d;
   opacity: ${(props) => (props.isVisible ? 1 : 0)};
   pointer-events: ${(props) => (props.isVisible ? 'all' : 'none')};
+  transition: 0.3s ease-in;
 `
 const IsWinBox = styled.div<IsWinPopupProps>`
   background-color: #fff;
