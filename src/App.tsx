@@ -6,11 +6,16 @@ import { Main } from './pages/Main'
 import { MazePage } from './pages/Maze'
 import { useStore } from './stores/RootStore/RootStoreContext'
 
-const GlobalStyles = createGlobalStyle`
+interface GlobalStylesProps {
+  isPopup: boolean
+}
+
+const GlobalStyles = createGlobalStyle<GlobalStylesProps>`
   body {
     margin:0;
     padding:0;
     background-color:#c5ecf1;
+    overflow:${(props) => props.isPopup && 'hidden'};
   }
 `
 const AppContainer = styled.div``
@@ -20,7 +25,7 @@ export const App: FC = observer((): JSX.Element => {
 
   return (
     <>
-      <GlobalStyles />
+      <GlobalStyles isPopup={AppStore.isWin} />
       <AppContainer>
         <Header />
         {AppStore.isGame ? <MazePage /> : <Main />}
