@@ -25,12 +25,12 @@ const IsWinContainer = styled.div<IsWinPopupProps>`
   background-color: #5a5a5a7d;
   opacity: ${(props) => (props.isVisible ? 1 : 0)};
   pointer-events: ${(props) => (props.isVisible ? 'all' : 'none')};
-  transition: 0.3s ease-in;
+  transition: 0.3s opacity ease-in;
 `
 const IsWinBox = styled.div<IsWinPopupProps>`
   background-color: #fff;
   transform: ${(props) => (props.isVisible ? 'scale(1)' : 'scale(0)')};
-  transition: 0.3s ease-in;
+  transition: 0.3s transform ease-in;
 `
 const IsWinTitle = styled.div``
 const RestartGameButton = styled.button``

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Maze } from './MazeBox/Maze'
 import { useStore } from '../../stores/RootStore/RootStoreContext'
 import { observer } from 'mobx-react-lite'
-import { IsWin } from './IsWin'
+import { IsWin } from './IsWinPopup'
 
 const MazePageContainer = styled.div``
 
