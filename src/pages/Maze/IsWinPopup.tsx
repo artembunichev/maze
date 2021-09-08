@@ -27,14 +27,61 @@ const IsWinContainer = styled.div<IsWinPopupProps>`
   transition: 0.26s opacity ease-in;
 `
 const IsWinBox = styled.div<IsWinPopupProps>`
+  width: 410px;
+  height: 500px;
+  padding: 11px;
+  display: flex;
+  flex-direction: column;
   background-color: #fff;
+  border-radius: 5px;
   transform: ${(props) => (props.isVisible ? 'scale(1)' : 'scale(0)')};
   transition: 0.26s transform ease-in;
 `
-const IsWinTitle = styled.div``
-const RestartGameButton = styled.button``
+const IsWinBoxContent = styled.div`
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+const IsWinTitle = styled.div`
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 50px;
+`
+const RestartGameButton = styled.button`
+  width: 210px;
+  height: 45px;
+  border-radius: 7px;
+  font-size: 21px;
+  font-weight: bold;
+  background-color: #c5ecf1;
+  &:hover {
+    cursor: pointer;
+  }
+`
 const RestartDescription = styled.div``
-const NewMazeSizeInput = styled.input``
+const RestartDescriptionItem = styled.div`
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 30px;
+`
+const NewMazeSizeInput = styled.input`
+  position: relative;
+  top: -1px;
+  width: 33px;
+  height: 17px;
+  font-size: 20px;
+  border: 0;
+  padding-top: 2px;
+  border-radius: 4px 4px 0 0;
+  border-bottom: 1px solid #b4e6e6dc;
+  transition: background-color 0.2s;
+  &:hover {
+    background-color: #c5ecf1;
+  }
+`
 
 export const IsWin: FC<IsWinProps> = observer(({ updateStore }): JSX.Element => {
   const rootStore = useStore()
@@ -59,13 +106,16 @@ export const IsWin: FC<IsWinProps> = observer(({ updateStore }): JSX.Element => 
   return (
     <IsWinContainer isVisible={AppStore.isWin}>
       <IsWinBox isVisible={AppStore.isWin}>
-        <IsWinTitle>Win!</IsWinTitle>
-        <RestartDescription>
-          Generate new maze with
-          <NewMazeSizeInput value={newMazeSize} onChange={checkAndSetSize} />
-          cells
-        </RestartDescription>
-        <RestartGameButton onClick={restartGame}>Generate new Maze</RestartGameButton>
+        <IsWinTitle>You Win!</IsWinTitle>
+        <IsWinBoxContent>
+          <RestartDescription>
+            <RestartDescriptionItem>You win for TIME</RestartDescriptionItem>
+            <RestartDescriptionItem>
+              Generate new maze with <NewMazeSizeInput value={newMazeSize} onChange={checkAndSetSize} /> cells
+            </RestartDescriptionItem>
+          </RestartDescription>
+          <RestartGameButton onClick={restartGame}>Generate new Maze</RestartGameButton>
+        </IsWinBoxContent>
       </IsWinBox>
     </IsWinContainer>
   )
