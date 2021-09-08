@@ -6,7 +6,6 @@ import { useStore } from '../../stores/RootStore/RootStoreContext'
 
 interface IsWinProps {
   updateStore: React.Dispatch<React.SetStateAction<IMazeStore>>
-  isVisible: boolean
 }
 
 interface IsWinPopupProps {
@@ -37,7 +36,7 @@ const RestartGameButton = styled.button``
 const RestartDescription = styled.div``
 const NewMazeSizeInput = styled.input``
 
-export const IsWin: FC<IsWinProps> = observer(({ updateStore, isVisible }): JSX.Element => {
+export const IsWin: FC<IsWinProps> = observer(({ updateStore }): JSX.Element => {
   const rootStore = useStore()
   const { AppStore } = rootStore
   const [newMazeSize, setNewMazeSize] = useState<number>(AppStore.mazeSize)
@@ -58,8 +57,8 @@ export const IsWin: FC<IsWinProps> = observer(({ updateStore, isVisible }): JSX.
   }
 
   return (
-    <IsWinContainer isVisible={isVisible}>
-      <IsWinBox isVisible={isVisible}>
+    <IsWinContainer isVisible={AppStore.isWin}>
+      <IsWinBox isVisible={AppStore.isWin}>
         <IsWinTitle>Win!</IsWinTitle>
         <RestartDescription>
           Generate new maze with

@@ -9,13 +9,13 @@ const MazePageContainer = styled.div``
 
 export const MazePage: FC = observer((): JSX.Element => {
   const rootStore = useStore()
-  const { AppStore, createMazeStore } = rootStore
+  const { createMazeStore } = rootStore
   const [mazeStore, updateMazeStore] = useState(() => createMazeStore.bind(rootStore)())
 
   return (
     <MazePageContainer>
       <Maze store={mazeStore} />
-      <IsWin isVisible={AppStore.isWin} updateStore={updateMazeStore} />
+      <IsWin updateStore={updateMazeStore} />
     </MazePageContainer>
   )
 })
