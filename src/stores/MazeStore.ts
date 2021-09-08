@@ -45,12 +45,16 @@ export class MazeStore implements IMazeStore {
     this.AppStore = AppStore
 
     //!УСТАНОВКА СТАРТОВОЙ ПОЗИЦИИ
+    const startPositions: Array<[number, number]> = [
+      [0, 0],
+      [0, this.size - 1],
+      [this.size - 1, 0],
+      [this.size - 1, this.size - 1],
+    ]
     const randomIndex = (): number => {
-      return getRandom(0, this.AppStore.mazeSize - 1)
+      return getRandom(0, startPositions.length - 1)
     }
-    const indexX = randomIndex()
-    const indexY = randomIndex()
-    this.currentCellIndexes = [indexY, indexX]
+    this.currentCellIndexes = startPositions[randomIndex()]
 
     const arr: ICellArray = []
     //!Заполение массива клеток
