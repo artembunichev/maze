@@ -17,6 +17,10 @@ const GlobalStyles = createGlobalStyle<GlobalStylesProps>`
     background-color:#c5ecf1;
     overflow:${(props) => props.isPopup && 'hidden'};
   }
+  input,button {
+    border:none;
+    outline: none;
+  }
 `
 const AppContainer = styled.div``
 
