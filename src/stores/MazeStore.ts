@@ -78,6 +78,32 @@ export class MazeStore implements IMazeStore {
     }
     this.currentCellIndexes = startPositions[randomIndex()]
 
+    //!ГЕНЕРАЦИЯ ЛАБИРИНТА
+    const getNear = (): Array<ICellIndexes> => {
+      const currentCell = this.currentCellIndexes
+      const cellX: number = this.currentCellIndexes.x
+      const cellY: number = this.currentCellIndexes.y
+      const nearCells: Array<ICellIndexes> = []
+      if (cellY === 0) {
+        nearCells.push({ ...currentCell, y: cellY + 1 })
+      }
+      if (cellX === this.size - 1) {
+        nearCells.push({ ...currentCell, x: cellX - 1 })
+      }
+      if (cellY === this.size - 1) {
+        nearCells.push({ ...currentCell, y: cellY - 1 })
+      }
+      if (cellX === 0) {
+        nearCells.push({ ...currentCell, x: cellX + 1 })
+      } else {
+        nearCells.push({ ...currentCell, y: cellY + 1 })
+        nearCells.push({ ...currentCell, x: cellX - 1 })
+        nearCells.push({ ...currentCell, y: cellY - 1 })
+        nearCells.push({ ...currentCell, x: cellX + 1 })
+      }
+      return nearCells
+    }
+    getNear()
     //   const sideCells = arr.reduce((acc, r, rowIndex) => {
     //     r.forEach((el, index) => {
     //       if (index === 0 || index === this.size - 1 || rowIndex === 0 || rowIndex === this.size - 1) {
