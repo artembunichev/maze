@@ -19,7 +19,10 @@ export interface IPosition {
 }
 
 type ICellArray = Array<Array<ICell>>
-
+interface ICellIndexes {
+  y: number
+  x: number
+}
 export interface IMazeStore {
   AppStore: IAppStore
   numberOfCells: number
@@ -28,7 +31,7 @@ export interface IMazeStore {
   userPosition: IPosition
   userSize: number
   currentCell: ICell
-  currentCellIndexes: [number, number]
+  currentCellIndexes: ICellIndexes
 
   updateXPosition(x: number): void
   updateYPosition(y: number): void
@@ -36,7 +39,7 @@ export interface IMazeStore {
 
 export class MazeStore implements IMazeStore {
   AppStore: IAppStore
-  currentCellIndexes: [number, number]
+  currentCellIndexes: ICellIndexes
   startPosition: [number, number]
   cellsArray: ICellArray
 
@@ -44,20 +47,9 @@ export class MazeStore implements IMazeStore {
     makeAutoObservable(this)
     this.AppStore = AppStore
 
-    //!УСТАНОВКА СТАРТОВОЙ ПОЗИЦИИ
-    const startPositions: Array<[number, number]> = [
-      [0, 0],
-      [0, this.size - 1],
-      [this.size - 1, 0],
-      [this.size - 1, this.size - 1],
-    ]
-    const randomIndex = (): number => {
-      return getRandom(0, startPositions.length - 1)
-    }
-    this.currentCellIndexes = startPositions[randomIndex()]
-
     const arr: ICellArray = []
-    //!Заполение массива клеток
+
+    //!ЗАПОЛНЕНИЕ ВСЕХ КЛЕТОК
     for (let x = 0; x < this.size; x++) {
       arr[x] = []
       for (let y = 0; y < this.size; y++) {
@@ -73,6 +65,18 @@ export class MazeStore implements IMazeStore {
         })
       }
     }
+
+    //!УСТАНОВКА СТАРТОВОЙ ПОЗИЦИИ
+    const startPositions: Array<ICellIndexes> = [
+      { y: 0, x: 0 },
+      { y: 0, x: this.size - 1 },
+      { y: this.size - 1, x: 0 },
+      { y: this.size - 1, x: this.size - 1 },
+    ]
+    const randomIndex = (): number => {
+      return getRandom(0, startPositions.length - 1)
+    }
+    this.currentCellIndexes = startPositions[randomIndex()]
 
     //   const sideCells = arr.reduce((acc, r, rowIndex) => {
     //     r.forEach((el, index) => {
@@ -103,24 +107,24 @@ export class MazeStore implements IMazeStore {
   updateXPosition(x: number): void {
     if (x < 0) {
       if (!this.currentCell.border.left) {
-        this.currentCellIndexes[1]--
+        this.currentCellIndexes.x--
       }
     }
     if (x > 0) {
       if (!this.currentCell.border.right) {
-        this.currentCellIndexes[1]++
+        this.currentCellIndexes.x++
       }
     }
   }
   updateYPosition(y: number): void {
     if (y < 0) {
       if (!this.currentCell.border.top) {
-        this.currentCellIndexes[0]--
+        this.currentCellIndexes.y--
       }
     }
     if (y > 0) {
       if (!this.currentCell.border.bottom) {
-        this.currentCellIndexes[0]++
+        this.currentCellIndexes.y++
       }
     }
   }
@@ -130,12 +134,12 @@ export class MazeStore implements IMazeStore {
   }
   get userPosition(): IPosition {
     return {
-      x: this.currentCellIndexes[1] * this.AppStore.cellSizeWithBorder + this.AppStore.borderWidth,
-      y: this.currentCellIndexes[0] * this.AppStore.cellSizeWithBorder + this.AppStore.borderWidth,
+      x: this.currentCellIndexes.x * this.AppStore.cellSizeWithBorder + this.AppStore.borderWidth,
+      y: this.currentCellIndexes.y * this.AppStore.cellSizeWithBorder + this.AppStore.borderWidth,
     }
   }
   get currentCell(): ICell {
-    return this.cellsArray[this.currentCellIndexes[0]][this.currentCellIndexes[1]]
+    return this.cellsArray[this.currentCellIndexes.y][this.currentCellIndexes.x]
   }
 
   get size(): number {
