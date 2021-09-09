@@ -74,29 +74,29 @@ export class MazeStore implements IMazeStore {
       }
     }
 
-    const sideCells = arr.reduce((acc, r, rowIndex) => {
-      r.forEach((el, index) => {
-        if (index === 0 || index === this.size - 1 || rowIndex === 0 || rowIndex === this.size - 1) {
-          acc.push(el)
-        }
-      })
-      return acc
-    }, [])
+    //   const sideCells = arr.reduce((acc, r, rowIndex) => {
+    //     r.forEach((el, index) => {
+    //       if (index === 0 || index === this.size - 1 || rowIndex === 0 || rowIndex === this.size - 1) {
+    //         acc.push(el)
+    //       }
+    //     })
+    //     return acc
+    //   }, [])
 
-    //!Генерация выхода
-    let index = getRandom(0, sideCells.length - 1)
-    while (sideCells[index].id === arr[this.currentCellIndexes[0]][this.currentCellIndexes[1]].id) {
-      index = getRandom(0, sideCells.length - 1)
-    }
-    const exitCell = sideCells[index]
+    //   //!Генерация выхода
+    //   let index = getRandom(0, sideCells.length - 1)
+    //   while (sideCells[index].id === arr[this.currentCellIndexes[0]][this.currentCellIndexes[1]].id) {
+    //     index = getRandom(0, sideCells.length - 1)
+    //   }
+    //   const exitCell = sideCells[index]
 
-    arr.forEach((r) => {
-      r.forEach((el) => {
-        if (el.id === exitCell.id) {
-          el.isExit = true
-        }
-      })
-    })
+    //   arr.forEach((r) => {
+    //     r.forEach((el) => {
+    //       if (el.id === exitCell.id) {
+    //         el.isExit = true
+    //       }
+    //     })
+    //   })
     this.cellsArray = arr
   }
 
