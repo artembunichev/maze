@@ -63,10 +63,10 @@ export class MazeStore implements IMazeStore {
       for (let y = 0; y < this.size; y++) {
         arr[x].push({
           border: {
-            left: false,
-            top: false,
-            right: false,
-            bottom: false,
+            left: true,
+            top: true,
+            right: true,
+            bottom: true,
           },
           id: `${x}${y}`,
           isExit: false,
@@ -74,35 +74,6 @@ export class MazeStore implements IMazeStore {
       }
     }
 
-    //!Заполение крайних клеток
-    arr.forEach((r, rowIndex) => {
-      r.forEach((el, index) => {
-        if (rowIndex === 0) {
-          el.border = {
-            ...el.border,
-            top: true,
-          }
-        }
-        if (rowIndex === this.size - 1) {
-          el.border = {
-            ...el.border,
-            bottom: true,
-          }
-        }
-        if (index === 0) {
-          el.border = {
-            ...el.border,
-            left: true,
-          }
-        }
-        if (index === this.size - 1) {
-          el.border = {
-            ...el.border,
-            right: true,
-          }
-        }
-      })
-    })
     const sideCells = arr.reduce((acc, r, rowIndex) => {
       r.forEach((el, index) => {
         if (index === 0 || index === this.size - 1 || rowIndex === 0 || rowIndex === this.size - 1) {
@@ -111,6 +82,7 @@ export class MazeStore implements IMazeStore {
       })
       return acc
     }, [])
+
     //!Генерация выхода
     let index = getRandom(0, sideCells.length - 1)
     while (sideCells[index].id === arr[this.currentCellIndexes[0]][this.currentCellIndexes[1]].id) {
