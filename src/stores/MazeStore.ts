@@ -19,10 +19,16 @@ export interface IPosition {
 }
 
 type ICellArray = Array<Array<ICell>>
+type NearDirection = 'top' | 'bottom' | 'right' | 'left' | 'null'
+
 interface ICellIndexes {
   y: number
   x: number
 }
+interface NearCellIndexes extends ICellIndexes {
+  direction: NearDirection
+}
+
 export interface IMazeStore {
   AppStore: IAppStore
   numberOfCells: number
@@ -66,6 +72,7 @@ export class MazeStore implements IMazeStore {
       }
     }
 
+    //!ГЕНЕРАЦИЯ ЛАБИРИНТА
     //!УСТАНОВКА СТАРТОВОЙ ПОЗИЦИИ
     const startPositions: Array<ICellIndexes> = [
       { y: 0, x: 0 },
@@ -76,34 +83,96 @@ export class MazeStore implements IMazeStore {
     const randomIndex = (): number => {
       return getRandom(0, startPositions.length - 1)
     }
-    this.currentCellIndexes = startPositions[randomIndex()]
+    const startPosition = startPositions[randomIndex()]
+    let generatorPosition: NearCellIndexes = { ...startPosition, direction: 'null' }
+    this.currentCellIndexes = startPosition
 
-    //!ГЕНЕРАЦИЯ ЛАБИРИНТА
-    const getNear = (): Array<ICellIndexes> => {
-      const currentCell = this.currentCellIndexes
-      const cellX: number = this.currentCellIndexes.x
-      const cellY: number = this.currentCellIndexes.y
-      const nearCells: Array<ICellIndexes> = []
+    //!ФУНКЦИИ
+    const getNear = (generatorPosition: ICellIndexes): Array<NearCellIndexes> => {
+      const currentCell = generatorPosition
+      const cellX: number = generatorPosition.x
+      const cellY: number = generatorPosition.y
+
+      const nearCells: Array<NearCellIndexes> = []
+
+      const upCell: NearCellIndexes = { ...currentCell, y: cellY - 1, direction: 'top' }
+      const dowmCell: NearCellIndexes = { ...currentCell, y: cellY + 1, direction: 'bottom' }
+      const leftCell: NearCellIndexes = { ...currentCell, x: cellX - 1, direction: 'left' }
+      const rightCell: NearCellIndexes = { ...currentCell, x: cellX + 1, direction: 'right' }
+
       if (cellY === 0) {
-        nearCells.push({ ...currentCell, y: cellY + 1 })
+        nearCells.push(dowmCell)
       }
       if (cellX === this.size - 1) {
-        nearCells.push({ ...currentCell, x: cellX - 1 })
+        nearCells.push(leftCell)
       }
       if (cellY === this.size - 1) {
-        nearCells.push({ ...currentCell, y: cellY - 1 })
+        nearCells.push(upCell)
       }
       if (cellX === 0) {
-        nearCells.push({ ...currentCell, x: cellX + 1 })
-      } else {
-        nearCells.push({ ...currentCell, y: cellY + 1 })
-        nearCells.push({ ...currentCell, x: cellX - 1 })
-        nearCells.push({ ...currentCell, y: cellY - 1 })
-        nearCells.push({ ...currentCell, x: cellX + 1 })
+        nearCells.push(rightCell)
+      }
+      if (cellY !== 0 && cellX !== this.size - 1 && cellY !== this.size - 1 && cellX !== 0) {
+        nearCells.push(dowmCell)
+        nearCells.push(leftCell)
+        nearCells.push(upCell)
+        nearCells.push(rightCell)
       }
       return nearCells
     }
-    getNear()
+    const diff = (a1: Array<string>, a2: Array<NearCellIndexes>): Array<NearCellIndexes> => {
+      return a2.filter((n) => {
+        return a1.indexOf(arr[n.y][n.x].id) === -1
+      })
+    }
+    const removeWall = (prevCell: ICell, nextCell: ICell, direction: NearDirection): void => {
+      const reverseDirection = (d: NearDirection): NearDirection => {
+        if (d === 'bottom') {
+          return 'top'
+        } else if (d === 'left') {
+          return 'right'
+        } else if (d === 'right') {
+          return 'left'
+        } else if (d === 'top') {
+          return 'bottom'
+        } else {
+          return 'null'
+        }
+      }
+      const reversedDirection = reverseDirection(direction)
+      arr.forEach((r) => {
+        r.forEach((l) => {
+          if (l.id === prevCell.id) {
+            if (direction !== 'null') {
+              l.border[direction] = false
+            }
+          }
+          if (l.id === nextCell.id) {
+            if (reversedDirection !== 'null') {
+              l.border[reversedDirection] = false
+            }
+          }
+        })
+      })
+    }
+
+    const visitedCells: Array<string> = [arr[generatorPosition.y][generatorPosition.x].id]
+    //!ПРОХОД ГЕНЕРАТОРА ПО ЛАБИРИНТУ
+    while (visitedCells.length < 5) {
+      const prevCell = arr[generatorPosition.y][generatorPosition.x]
+      const nears = diff(visitedCells, getNear(generatorPosition))
+      if (nears.length !== 0) {
+        generatorPosition = nears[getRandom(0, nears.length - 1)]
+        const nextCell = arr[generatorPosition.y][generatorPosition.x]
+        const direction = generatorPosition.direction
+        removeWall(prevCell, nextCell, direction)
+        visitedCells.push(nextCell.id)
+      } else {
+        console.log('соседей не осталось')
+        break
+      }
+    }
+
     //   const sideCells = arr.reduce((acc, r, rowIndex) => {
     //     r.forEach((el, index) => {
     //       if (index === 0 || index === this.size - 1 || rowIndex === 0 || rowIndex === this.size - 1) {
