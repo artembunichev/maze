@@ -3,8 +3,11 @@ import React, { FC, useState } from 'react'
 import styled from 'styled-components'
 import { IMazeStore } from '../../stores/MazeStore'
 import { useStore } from '../../stores/RootStore/RootStoreContext'
+import { datePeriodFormater } from '../../utils/datePeriodFormater'
 
 interface IsWinProps {
+  startDate: number
+  endDate: number
   updateStore: React.Dispatch<React.SetStateAction<IMazeStore>>
 }
 
@@ -12,7 +15,7 @@ interface IsWinPopupProps {
   isVisible: boolean
 }
 const IsWinContainer = styled.div<IsWinPopupProps>`
-  position: absolute;
+  position: fixed;
   z-index: 9999;
   left: 0px;
   top: 0px;
@@ -83,7 +86,7 @@ const NewMazeSizeInput = styled.input`
   }
 `
 
-export const IsWin: FC<IsWinProps> = observer(({ updateStore }): JSX.Element => {
+export const IsWin: FC<IsWinProps> = observer(({ startDate, endDate, updateStore }): JSX.Element => {
   const rootStore = useStore()
   const { AppStore } = rootStore
   const [newMazeSize, setNewMazeSize] = useState<number>(AppStore.mazeSize)
@@ -109,7 +112,9 @@ export const IsWin: FC<IsWinProps> = observer(({ updateStore }): JSX.Element => 
         <IsWinTitle>You Win!</IsWinTitle>
         <IsWinBoxContent>
           <RestartDescription>
-            <RestartDescriptionItem>You win for TIME</RestartDescriptionItem>
+            <RestartDescriptionItem>
+              You win for {datePeriodFormater(startDate, endDate)}
+            </RestartDescriptionItem>
             <RestartDescriptionItem>
               Generate new maze with <NewMazeSizeInput value={newMazeSize} onChange={checkAndSetSize} /> cells
             </RestartDescriptionItem>

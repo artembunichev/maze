@@ -15,7 +15,7 @@ export const MazePage: FC = observer((): JSX.Element => {
   return (
     <MazePageContainer>
       <Maze store={mazeStore} />
-      <IsWin updateStore={updateMazeStore} />
+      <IsWin updateStore={updateMazeStore} startDate={mazeStore.date.start} endDate={mazeStore.date.end} />
     </MazePageContainer>
   )
 })
