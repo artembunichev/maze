@@ -73,6 +73,7 @@ export class MazeStore implements IMazeStore {
     }
 
     //!ГЕНЕРАЦИЯ ЛАБИРИНТА
+
     //!УСТАНОВКА СТАРТОВОЙ ПОЗИЦИИ
     const startPositions: Array<ICellIndexes> = [
       { y: 0, x: 0 },
@@ -84,6 +85,18 @@ export class MazeStore implements IMazeStore {
       return getRandom(0, startPositions.length - 1)
     }
     const startPosition = startPositions[randomIndex()]
+
+    //!УСТАНОВКА ВЫХОДА В ПРОТИВОПОЛОЖНОЙ СТОРОНЕ ОТ СТАРТА
+    const exitPosition: ICellIndexes = { x: 0, y: 0 }
+    if (startPosition.y === 0) {
+      exitPosition.y = this.size - 1
+    } else exitPosition.y = 0
+    if (startPosition.x === 0) {
+      exitPosition.x = this.size - 1
+    } else exitPosition.x = 0
+
+    arr[exitPosition.y][exitPosition.x].isExit = true
+
     let generatorPosition: NearCellIndexes = { ...startPosition, direction: 'null' }
     this.currentCellIndexes = startPosition
 
@@ -179,29 +192,6 @@ export class MazeStore implements IMazeStore {
       }
     }
 
-    //   const sideCells = arr.reduce((acc, r, rowIndex) => {
-    //     r.forEach((el, index) => {
-    //       if (index === 0 || index === this.size - 1 || rowIndex === 0 || rowIndex === this.size - 1) {
-    //         acc.push(el)
-    //       }
-    //     })
-    //     return acc
-    //   }, [])
-
-    //   //!Генерация выхода
-    //   let index = getRandom(0, sideCells.length - 1)
-    //   while (sideCells[index].id === arr[this.currentCellIndexes[0]][this.currentCellIndexes[1]].id) {
-    //     index = getRandom(0, sideCells.length - 1)
-    //   }
-    //   const exitCell = sideCells[index]
-
-    //   arr.forEach((r) => {
-    //     r.forEach((el) => {
-    //       if (el.id === exitCell.id) {
-    //         el.isExit = true
-    //       }
-    //     })
-    //   })
     this.cellsArray = arr
   }
 
