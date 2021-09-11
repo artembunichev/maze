@@ -95,9 +95,7 @@ export const Maze: FC<MazeProps> = observer(({ store }): JSX.Element => {
               border={c.border}
               borderWidth={AppStore.borderWidth}
               cellSize={AppStore.cellSize}
-              key={c.id}>
-              {c.id}
-            </CellContainer>
+              key={c.id}></CellContainer>
           )
         })}
       </CellRowContainer>
