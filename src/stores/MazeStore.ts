@@ -28,6 +28,10 @@ interface ICellIndexes {
 interface NearCellIndexes extends ICellIndexes {
   direction: NearDirection
 }
+interface IDate {
+  start: number
+  end: number
+}
 
 export interface IMazeStore {
   AppStore: IAppStore
@@ -38,9 +42,12 @@ export interface IMazeStore {
   userSize: number
   currentCell: ICell
   currentCellIndexes: ICellIndexes
+  date: IDate
 
   updateXPosition(x: number): void
   updateYPosition(y: number): void
+  setStartDate(date: number): void
+  setEndDate(date: number): void
 }
 
 export class MazeStore implements IMazeStore {
@@ -194,7 +201,10 @@ export class MazeStore implements IMazeStore {
 
     this.cellsArray = arr
   }
-
+  date: IDate = {
+    start: 0,
+    end: 0,
+  }
   updateXPosition(x: number): void {
     if (x < 0) {
       if (!this.currentCell.border.left) {
@@ -218,6 +228,12 @@ export class MazeStore implements IMazeStore {
         this.currentCellIndexes.y++
       }
     }
+  }
+  setStartDate(date: number): void {
+    this.date.start = date
+  }
+  setEndDate(date: number): void {
+    this.date.end = date
   }
 
   get userSize(): number {

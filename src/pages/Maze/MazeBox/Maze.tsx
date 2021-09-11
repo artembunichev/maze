@@ -59,6 +59,10 @@ export const Maze: FC<MazeProps> = observer(({ store }): JSX.Element => {
   const { AppStore } = useStore()
 
   useEffect(() => {
+    const startRecordingDate = () => {
+      store.setStartDate(new Date().getTime())
+      window.removeEventListener('keypress', startRecordingDate)
+    }
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.code === Directions.UP) {
         store.updateYPosition(-AppStore.cellSize - AppStore.borderWidth * 2)
@@ -75,6 +79,10 @@ export const Maze: FC<MazeProps> = observer(({ store }): JSX.Element => {
     }
     if (!AppStore.isWin) {
       window.addEventListener('keypress', handleKeyPress)
+      window.addEventListener('keypress', startRecordingDate)
+    }
+    if (AppStore.isWin) {
+      store.setEndDate(new Date().getTime())
     }
 
     return () => window.removeEventListener('keypress', handleKeyPress)
