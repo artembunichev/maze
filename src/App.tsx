@@ -15,7 +15,8 @@ const GlobalStyles = createGlobalStyle<GlobalStylesProps>`
     margin:0;
     padding:0;
     background-color:#c5ecf1;
-    overflow:${(props) => props.isPopup && 'hidden'};
+    overflow-x: hidden;
+    overflow-y:${(props) => props.isPopup && 'hidden'};
   }
   input,button {
     border:none;
