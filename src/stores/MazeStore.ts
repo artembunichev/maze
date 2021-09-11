@@ -96,28 +96,30 @@ export class MazeStore implements IMazeStore {
       const nearCells: Array<NearCellIndexes> = []
 
       const upCell: NearCellIndexes = { ...currentCell, y: cellY - 1, direction: 'top' }
-      const dowmCell: NearCellIndexes = { ...currentCell, y: cellY + 1, direction: 'bottom' }
+      const downCell: NearCellIndexes = { ...currentCell, y: cellY + 1, direction: 'bottom' }
       const leftCell: NearCellIndexes = { ...currentCell, x: cellX - 1, direction: 'left' }
       const rightCell: NearCellIndexes = { ...currentCell, x: cellX + 1, direction: 'right' }
 
-      if (cellY === 0) {
-        nearCells.push(dowmCell)
+      if (cellX !== 0 && cellX !== this.size - 1) {
+        nearCells.push(leftCell, rightCell)
+      } else {
+        if (cellX === 0) {
+          nearCells.push(rightCell)
+        } else if (cellX === this.size - 1) {
+          nearCells.push(leftCell)
+        }
       }
-      if (cellX === this.size - 1) {
-        nearCells.push(leftCell)
+
+      if (cellY !== 0 && cellY !== this.size - 1) {
+        nearCells.push(upCell, downCell)
+      } else {
+        if (cellY === 0) {
+          nearCells.push(downCell)
+        } else if (cellY === this.size - 1) {
+          nearCells.push(upCell)
+        }
       }
-      if (cellY === this.size - 1) {
-        nearCells.push(upCell)
-      }
-      if (cellX === 0) {
-        nearCells.push(rightCell)
-      }
-      if (cellY !== 0 && cellX !== this.size - 1 && cellY !== this.size - 1 && cellX !== 0) {
-        nearCells.push(dowmCell)
-        nearCells.push(leftCell)
-        nearCells.push(upCell)
-        nearCells.push(rightCell)
-      }
+
       return nearCells
     }
     const diff = (a1: Array<string>, a2: Array<NearCellIndexes>): Array<NearCellIndexes> => {
@@ -157,8 +159,9 @@ export class MazeStore implements IMazeStore {
     }
 
     const visitedCells: Array<string> = [arr[generatorPosition.y][generatorPosition.x].id]
+
     //!ПРОХОД ГЕНЕРАТОРА ПО ЛАБИРИНТУ
-    while (visitedCells.length < 5) {
+    while (visitedCells.length < 15) {
       const prevCell = arr[generatorPosition.y][generatorPosition.x]
       const nears = diff(visitedCells, getNear(generatorPosition))
       if (nears.length !== 0) {
@@ -168,7 +171,6 @@ export class MazeStore implements IMazeStore {
         removeWall(prevCell, nextCell, direction)
         visitedCells.push(nextCell.id)
       } else {
-        console.log('соседей не осталось')
         break
       }
     }
