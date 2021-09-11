@@ -46,10 +46,11 @@ const CellContainer = styled.div<CellContainerProps>`
   background-color: ${(props) => props.isExit && `#00ff6a`};
   width: ${(props) => props.cellSize}px;
   height: ${(props) => props.cellSize}px;
-  border-left: ${(props) => `${props.borderWidth}px solid ${props.border.left ? `#000000` : `#c5ecf1`}`};
-  border-top: ${(props) => `${props.borderWidth}px solid ${props.border.top ? `#000000` : `#c5ecf1`}`};
-  border-right: ${(props) => `${props.borderWidth}px solid ${props.border.right ? `#000000` : `#c5ecf1`}`};
-  border-bottom: ${(props) => `${props.borderWidth}px solid ${props.border.bottom ? `#000000` : `#c5ecf1`}`};
+  border-left: ${(props) => `${props.borderWidth}px inset ${props.border.left ? `#000000` : `transparent`}`};
+  border-top: ${(props) => `${props.borderWidth}px inset ${props.border.top ? `#000000` : `transparent`}`};
+  border-right: ${(props) => `${props.borderWidth}px inset ${props.border.right ? `#000000` : `transparent`}`};
+  border-bottom: ${(props) =>
+    `${props.borderWidth}px inset ${props.border.bottom ? `#000000` : `transparent`}`};
 `
 
 export const MazeStoreContext = createContext<IMazeStore | null>(null)
