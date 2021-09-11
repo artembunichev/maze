@@ -86,7 +86,7 @@ export const Maze: FC<MazeProps> = observer(({ store }): JSX.Element => {
     }
   }, [store.currentCell])
 
-  const cells = store.cellsArray.map((r) => {
+  const cells: Array<JSX.Element> = store.cellsArray.map((r) => {
     return (
       <CellRowContainer key={`${r[0].id + r[store.size - 1].id}`}>
         {r.map((c) => {
