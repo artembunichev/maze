@@ -66,7 +66,7 @@ export class MazeStore implements IMazeStore {
             right: true,
             bottom: true,
           },
-          id: `${x}${y}`,
+          id: `${x}r${y}e`,
           isExit: false,
         })
       }
@@ -161,7 +161,7 @@ export class MazeStore implements IMazeStore {
     const visitedCells: Array<string> = [arr[generatorPosition.y][generatorPosition.x].id]
 
     //!ПРОХОД ГЕНЕРАТОРА ПО ЛАБИРИНТУ
-    while (visitedCells.length < 15) {
+    while (visitedCells.length < this.numberOfCells) {
       const prevCell = arr[generatorPosition.y][generatorPosition.x]
       const nears = diff(visitedCells, getNear(generatorPosition))
       if (nears.length !== 0) {
@@ -171,6 +171,7 @@ export class MazeStore implements IMazeStore {
         removeWall(prevCell, nextCell, direction)
         visitedCells.push(nextCell.id)
       } else {
+        console.log('соседи закончились')
         break
       }
     }
