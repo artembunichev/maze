@@ -40,7 +40,6 @@ export interface IMazeStore {
   size: number
   cellsArray: ICellArray
   userPosition: IPosition
-  userSize: number
   currentCell: ICell
   currentCellIndexes: ICellIndexes
   date: IDate
@@ -242,9 +241,6 @@ export class MazeStore implements IMazeStore {
     this.cellsArray[this.currentCellIndexes.y][this.currentCellIndexes.x].isVisited = true
   }
 
-  get userSize(): number {
-    return this.AppStore.cellSize
-  }
   get userPosition(): IPosition {
     return {
       x: this.currentCellIndexes.x * this.AppStore.cellSizeWithBorder + this.AppStore.borderWidth,

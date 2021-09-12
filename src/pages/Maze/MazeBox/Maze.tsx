@@ -73,7 +73,7 @@ export const Maze: FC<MazeProps> = observer(({ store }): JSX.Element => {
     <MazeStoreContext.Provider value={store}>
       <MazeWrapper>
         <MazeContainer mazeWidth={(AppStore.cellSize + AppStore.borderWidth * 2) * store.size}>
-          <User userSize={store.userSize} position={store.userPosition} />
+          <User userSize={AppStore.userSize} position={store.userPosition} />
           {cells}
         </MazeContainer>
       </MazeWrapper>

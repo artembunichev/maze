@@ -7,6 +7,7 @@ export interface IAppStore {
   cellSize: number
   cellSizeWithBorder: number
   isWin: boolean
+  userSize: number
 
   setIsGame(value: boolean): void
   setMazeSize(width: number): void
@@ -26,6 +27,9 @@ export class AppStore implements IAppStore {
 
   get cellSizeWithBorder(): number {
     return this.cellSize + this.borderWidth * 2
+  }
+  get userSize(): number {
+    return this.cellSize
   }
   setIsGame(value: boolean): void {
     this.isGame = value
