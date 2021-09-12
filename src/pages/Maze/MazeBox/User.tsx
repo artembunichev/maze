@@ -17,6 +17,7 @@ const UserContainer = styled.div<UserContainerProps>`
   height: ${(props) => props.userSize}px;
   position: absolute;
   background-color: #ff0000;
+  transition: 0.16s;
 `
 
 export const User: FC<UserProps> = observer((props): JSX.Element => {
