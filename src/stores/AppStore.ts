@@ -21,7 +21,7 @@ export class AppStore implements IAppStore {
   isGame = false
   borderWidth = 1
   mazeSize = 6
-  cellSize = 50
+  cellSize = 60
   isWin = false
 
   get cellSizeWithBorder(): number {
