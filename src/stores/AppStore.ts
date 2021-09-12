@@ -9,6 +9,11 @@ export interface IAppStore {
   isWin: boolean
   userSize: number
 
+  miniCoef: number
+
+  miniCellSize: number
+  miniUserSize: number
+
   setIsGame(value: boolean): void
   setMazeSize(width: number): void
   setIsWin(value: boolean): void
@@ -24,6 +29,7 @@ export class AppStore implements IAppStore {
   mazeSize = 6
   cellSize = 60
   isWin = false
+  miniCoef = 5
 
   get cellSizeWithBorder(): number {
     return this.cellSize + this.borderWidth * 2
@@ -31,6 +37,13 @@ export class AppStore implements IAppStore {
   get userSize(): number {
     return this.cellSize
   }
+  get miniCellSize(): number {
+    return this.cellSize / this.miniCoef
+  }
+  get miniUserSize(): number {
+    return this.userSize / this.miniCoef
+  }
+
   setIsGame(value: boolean): void {
     this.isGame = value
   }
