@@ -1,11 +1,13 @@
 import React, { FC, createContext } from 'react'
 import styled from 'styled-components'
-import { useStore } from '../../../stores/RootStore/RootStoreContext'
 import { IBorder, IMazeStore } from '../../../stores/MazeStore'
 import { observer } from 'mobx-react-lite'
 import { User } from './User'
 
 interface MazeProps {
+  userSize: number
+  borderWidth: number
+  cellSize: number
   store: IMazeStore
 }
 
@@ -49,9 +51,7 @@ const CellContainer = styled.div<CellContainerProps>`
 
 export const MazeStoreContext = createContext<IMazeStore | null>(null)
 
-export const Maze: FC<MazeProps> = observer(({ store }): JSX.Element => {
-  const { AppStore } = useStore()
-
+export const Maze: FC<MazeProps> = observer(({ store, borderWidth, cellSize, userSize }): JSX.Element => {
   const cells: Array<JSX.Element> = store.cellsArray.map((r) => {
     return (
       <CellRowContainer key={`${r[0].id + r[store.size - 1].id}`}>
@@ -60,8 +60,8 @@ export const Maze: FC<MazeProps> = observer(({ store }): JSX.Element => {
             <CellContainer
               isExit={c.isExit}
               border={c.border}
-              borderWidth={AppStore.borderWidth}
-              cellSize={AppStore.cellSize}
+              borderWidth={borderWidth}
+              cellSize={cellSize}
               key={c.id}></CellContainer>
           )
         })}
@@ -72,8 +72,8 @@ export const Maze: FC<MazeProps> = observer(({ store }): JSX.Element => {
   return (
     <MazeStoreContext.Provider value={store}>
       <MazeWrapper>
-        <MazeContainer mazeWidth={(AppStore.cellSize + AppStore.borderWidth * 2) * store.size}>
-          <User userSize={AppStore.userSize} position={store.userPosition} />
+        <MazeContainer mazeWidth={(cellSize + borderWidth * 2) * store.size}>
+          <User userSize={userSize} position={store.userPosition} />
           {cells}
         </MazeContainer>
       </MazeWrapper>
