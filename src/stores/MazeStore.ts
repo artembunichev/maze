@@ -12,6 +12,7 @@ export interface ICell {
   border: IBorder
   id: string
   isExit: boolean
+  isVisited: boolean
 }
 export interface IPosition {
   x: number
@@ -48,6 +49,7 @@ export interface IMazeStore {
   updateYPosition(y: number): void
   setStartDate(date: number): void
   setEndDate(date: number): void
+  setIsCellVisited(): void
 }
 
 export class MazeStore implements IMazeStore {
@@ -75,6 +77,7 @@ export class MazeStore implements IMazeStore {
           },
           id: `${x}r${y}e`,
           isExit: false,
+          isVisited: false,
         })
       }
     }
@@ -234,6 +237,9 @@ export class MazeStore implements IMazeStore {
   }
   setEndDate(date: number): void {
     this.date.end = date
+  }
+  setIsCellVisited(): void {
+    this.cellsArray[this.currentCellIndexes.y][this.currentCellIndexes.x].isVisited = true
   }
 
   get userSize(): number {
