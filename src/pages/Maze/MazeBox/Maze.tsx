@@ -1,4 +1,4 @@
-import React, { FC, createContext, useEffect } from 'react'
+import React, { FC, createContext } from 'react'
 import styled from 'styled-components'
 import { useStore } from '../../../stores/RootStore/RootStoreContext'
 import { IBorder, IMazeStore } from '../../../stores/MazeStore'
@@ -7,12 +7,6 @@ import { User } from './User'
 
 interface MazeProps {
   store: IMazeStore
-}
-enum Directions {
-  UP = 'KeyW',
-  DOWN = 'KeyS',
-  RIGHT = 'KeyD',
-  LEFT = 'KeyA',
 }
 
 interface CellContainerProps {
@@ -57,43 +51,6 @@ export const MazeStoreContext = createContext<IMazeStore | null>(null)
 
 export const Maze: FC<MazeProps> = observer(({ store }): JSX.Element => {
   const { AppStore } = useStore()
-
-  useEffect(() => {
-    const startRecordingDate = () => {
-      store.setStartDate(new Date().getTime())
-      window.removeEventListener('keypress', startRecordingDate)
-    }
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.code === Directions.UP) {
-        store.updateYPosition(-AppStore.cellSize - AppStore.borderWidth * 2)
-      }
-      if (e.code === Directions.DOWN) {
-        store.updateYPosition(AppStore.cellSize + AppStore.borderWidth * 2)
-      }
-      if (e.code === Directions.LEFT) {
-        store.updateXPosition(-AppStore.cellSize - AppStore.borderWidth * 2)
-      }
-      if (e.code == Directions.RIGHT) {
-        store.updateXPosition(AppStore.cellSize + AppStore.borderWidth * 2)
-      }
-    }
-    if (!AppStore.isWin) {
-      window.addEventListener('keypress', handleKeyPress)
-      window.addEventListener('keypress', startRecordingDate)
-    }
-    if (AppStore.isWin) {
-      store.setEndDate(new Date().getTime())
-    }
-
-    return () => window.removeEventListener('keypress', handleKeyPress)
-  }, [AppStore.isWin])
-
-  useEffect(() => {
-    if (store.currentCell.isExit) {
-      AppStore.setIsWin(true)
-    }
-    store.setIsCellVisited()
-  }, [store.currentCell])
 
   const cells: Array<JSX.Element> = store.cellsArray.map((r) => {
     return (
