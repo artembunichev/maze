@@ -109,18 +109,23 @@ export const IsWin: FC<IsWinProps> = observer(({ startDate, endDate, updateStore
   return (
     <IsWinContainer isVisible={AppStore.isWin}>
       <IsWinBox isVisible={AppStore.isWin}>
-        <IsWinTitle>You Win!</IsWinTitle>
-        <IsWinBoxContent>
-          <RestartDescription>
-            <RestartDescriptionItem>
-              You win for {datePeriodFormater(startDate, endDate)}
-            </RestartDescriptionItem>
-            <RestartDescriptionItem>
-              Generate new maze with <NewMazeSizeInput value={newMazeSize} onChange={checkAndSetSize} /> cells
-            </RestartDescriptionItem>
-          </RestartDescription>
-          <RestartGameButton onClick={restartGame}>Generate new Maze</RestartGameButton>
-        </IsWinBoxContent>
+        {AppStore.isWin && (
+          <>
+            <IsWinTitle>You Win!</IsWinTitle>
+            <IsWinBoxContent>
+              <RestartDescription>
+                <RestartDescriptionItem>
+                  You win for {datePeriodFormater(startDate, endDate)}
+                </RestartDescriptionItem>
+                <RestartDescriptionItem>
+                  Generate new maze with <NewMazeSizeInput value={newMazeSize} onChange={checkAndSetSize} />{' '}
+                  cells
+                </RestartDescriptionItem>
+              </RestartDescription>
+              <RestartGameButton onClick={restartGame}>Generate new Maze</RestartGameButton>
+            </IsWinBoxContent>
+          </>
+        )}
       </IsWinBox>
     </IsWinContainer>
   )
