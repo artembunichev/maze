@@ -92,6 +92,7 @@ export const Maze: FC<MazeProps> = observer(({ store }): JSX.Element => {
     if (store.currentCell.isExit) {
       AppStore.setIsWin(true)
     }
+    store.setIsCellVisited()
   }, [store.currentCell])
 
   const cells: Array<JSX.Element> = store.cellsArray.map((r) => {
