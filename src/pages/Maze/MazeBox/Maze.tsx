@@ -17,6 +17,7 @@ interface CellContainerProps {
   borderWidth: number
   border: IBorder
   isExit: boolean
+  isStart: boolean
   isVisited?: boolean
 }
 interface MazeContainerProps {
@@ -41,7 +42,8 @@ const CellContainer = styled.div<CellContainerProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => (props.isExit ? `#00ff6a` : props.isVisited ? `#ffe20a` : 'transparent')};
+  background-color: ${(props) =>
+    props.isExit ? `#00ff6a` : props.isStart ? '#ff0000' : props.isVisited ? `#ffe20a` : 'transparent'};
   width: ${(props) => props.cellSize}px;
   height: ${(props) => props.cellSize}px;
   border-left: ${(props) => `${props.borderWidth}px inset ${props.border.left ? `#000000` : `transparent`}`};
@@ -62,6 +64,7 @@ export const Maze: FC<MazeProps> = observer(({ store, cellSize, userSize, isMaze
         {r.map((c) => {
           return (
             <CellContainer
+              isStart={isMazePresentable ? c.isStart : false}
               isExit={c.isExit}
               border={c.border}
               borderWidth={AppStore.borderWidth}

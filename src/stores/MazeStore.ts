@@ -12,6 +12,7 @@ export interface ICell {
   border: IBorder
   id: string
   isExit: boolean
+  isStart: boolean
   isVisited: boolean
 }
 type ICellArray = Array<Array<ICell>>
@@ -72,6 +73,7 @@ export class MazeStore implements IMazeStore {
           id: `${x}r${y}e`,
           isExit: false,
           isVisited: false,
+          isStart: false,
         })
       }
     }
@@ -88,7 +90,7 @@ export class MazeStore implements IMazeStore {
     const randomIndex = (): number => {
       return getRandom(0, startPositions.length - 1)
     }
-    const startPosition = startPositions[randomIndex()]
+    const startPosition: ICellIndexes = startPositions[randomIndex()]
 
     //!УСТАНОВКА ВЫХОДА В ПРОТИВОПОЛОЖНОЙ СТОРОНЕ ОТ СТАРТА
     const exitPosition: ICellIndexes = { x: 0, y: 0 }
@@ -99,11 +101,12 @@ export class MazeStore implements IMazeStore {
       exitPosition.x = this.size - 1
     } else exitPosition.x = 0
 
-    arr[exitPosition.y][exitPosition.x].isExit = true
-
     let generatorPosition: NearCellIndexes = { ...startPosition, direction: 'null' }
     this.currentCellIndexes = startPosition
     this.startPosition = startPosition
+
+    arr[exitPosition.y][exitPosition.x].isExit = true
+    arr[startPosition.y][startPosition.y].isStart = true
 
     //!ФУНКЦИИ
     const getNear = (generatorPosition: ICellIndexes): Array<NearCellIndexes> => {
