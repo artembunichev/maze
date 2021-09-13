@@ -106,7 +106,7 @@ export class MazeStore implements IMazeStore {
     this.startPosition = startPosition
 
     arr[exitPosition.y][exitPosition.x].isExit = true
-    arr[startPosition.y][startPosition.y].isStart = true
+    arr[startPosition.y][startPosition.x].isStart = true
 
     //!ФУНКЦИИ
     const getNear = (generatorPosition: ICellIndexes): Array<NearCellIndexes> => {
