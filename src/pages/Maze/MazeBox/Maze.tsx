@@ -81,9 +81,7 @@ export const Maze: FC<MazeProps> = observer(({ store, cellSize, userSize, isMaze
     <MazeStoreContext.Provider value={store}>
       <MazeWrapper>
         <MazeContainer mazeWidth={(cellSize + AppStore.borderWidth * 2) * store.size}>
-          {!isMazePresentable && (
-            <User userSize={userSize} position={isMazePresentable ? store.startPosition : store.userPosition} />
-          )}
+          {!isMazePresentable && <User userSize={userSize} position={store.userPosition} />}
           {cells}
         </MazeContainer>
       </MazeWrapper>
