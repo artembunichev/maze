@@ -4,8 +4,10 @@ import styled from 'styled-components'
 import { IMazeStore } from '../../stores/MazeStore'
 import { useStore } from '../../stores/RootStore/RootStoreContext'
 import { datePeriodFormater } from '../../utils/datePeriodFormater'
+import { Maze } from './MazeBox/Maze'
 
 interface IsWinProps {
+  mazeStore: IMazeStore
   startDate: number
   endDate: number
   updateStore: React.Dispatch<React.SetStateAction<IMazeStore>>
@@ -86,7 +88,7 @@ const NewMazeSizeInput = styled.input`
   }
 `
 
-export const IsWin: FC<IsWinProps> = observer(({ startDate, endDate, updateStore }): JSX.Element => {
+export const IsWin: FC<IsWinProps> = observer(({ mazeStore, startDate, endDate, updateStore }): JSX.Element => {
   const rootStore = useStore()
   const { AppStore } = rootStore
   const [newMazeSize, setNewMazeSize] = useState<number>(AppStore.mazeSize)
@@ -124,6 +126,12 @@ export const IsWin: FC<IsWinProps> = observer(({ startDate, endDate, updateStore
               </RestartDescription>
               <RestartGameButton onClick={restartGame}>Generate new Maze</RestartGameButton>
             </IsWinBoxContent>
+            <Maze
+              store={mazeStore}
+              cellSize={AppStore.miniCellSize}
+              userSize={AppStore.miniUserSize}
+              isMazePresentable={true}
+            />
           </>
         )}
       </IsWinBox>

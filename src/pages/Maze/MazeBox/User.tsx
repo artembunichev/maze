@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { IPosition } from '../../../stores/MazeStore'
+import { ICellIndexes } from '../../../stores/MazeStore'
 
 interface UserProps {
-  position: IPosition
+  position: ICellIndexes
   userSize: number
 }
 
@@ -20,13 +20,13 @@ const UserContainer = styled.div<UserContainerProps>`
   transition: 0.16s;
 `
 
-export const User: FC<UserProps> = observer((props): JSX.Element => {
+export const User: FC<UserProps> = observer(({ position, userSize }): JSX.Element => {
   return (
     <UserContainer
       style={{
-        top: `${props.position.y}px`,
-        left: `${props.position.x}px`,
+        top: `${position.y}px`,
+        left: `${position.x}px`,
       }}
-      userSize={props.userSize}></UserContainer>
+      userSize={userSize}></UserContainer>
   )
 })

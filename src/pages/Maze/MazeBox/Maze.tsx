@@ -3,12 +3,13 @@ import styled from 'styled-components'
 import { IBorder, IMazeStore } from '../../../stores/MazeStore'
 import { observer } from 'mobx-react-lite'
 import { User } from './User'
+import { useStore } from '../../../stores/RootStore/RootStoreContext'
 
 interface MazeProps {
   userSize: number
-  borderWidth: number
   cellSize: number
   store: IMazeStore
+  isMazePresentable: boolean
 }
 
 interface CellContainerProps {
@@ -16,6 +17,7 @@ interface CellContainerProps {
   borderWidth: number
   border: IBorder
   isExit: boolean
+  isVisited?: boolean
 }
 interface MazeContainerProps {
   mazeWidth: number
@@ -39,7 +41,7 @@ const CellContainer = styled.div<CellContainerProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => props.isExit && `#00ff6a`};
+  background-color: ${(props) => (props.isExit ? `#00ff6a` : props.isVisited ? `#ffe20a` : 'transparent')};
   width: ${(props) => props.cellSize}px;
   height: ${(props) => props.cellSize}px;
   border-left: ${(props) => `${props.borderWidth}px inset ${props.border.left ? `#000000` : `transparent`}`};
@@ -51,7 +53,9 @@ const CellContainer = styled.div<CellContainerProps>`
 
 export const MazeStoreContext = createContext<IMazeStore | null>(null)
 
-export const Maze: FC<MazeProps> = observer(({ store, borderWidth, cellSize, userSize }): JSX.Element => {
+export const Maze: FC<MazeProps> = observer(({ store, cellSize, userSize, isMazePresentable }): JSX.Element => {
+  const { AppStore } = useStore()
+
   const cells: Array<JSX.Element> = store.cellsArray.map((r) => {
     return (
       <CellRowContainer key={`${r[0].id + r[store.size - 1].id}`}>
@@ -60,8 +64,9 @@ export const Maze: FC<MazeProps> = observer(({ store, borderWidth, cellSize, use
             <CellContainer
               isExit={c.isExit}
               border={c.border}
-              borderWidth={borderWidth}
+              borderWidth={AppStore.borderWidth}
               cellSize={cellSize}
+              isVisited={isMazePresentable ? c.isVisited : false}
               key={c.id}></CellContainer>
           )
         })}
@@ -72,8 +77,10 @@ export const Maze: FC<MazeProps> = observer(({ store, borderWidth, cellSize, use
   return (
     <MazeStoreContext.Provider value={store}>
       <MazeWrapper>
-        <MazeContainer mazeWidth={(cellSize + borderWidth * 2) * store.size}>
-          <User userSize={userSize} position={store.userPosition} />
+        <MazeContainer mazeWidth={(cellSize + AppStore.borderWidth * 2) * store.size}>
+          {!isMazePresentable && (
+            <User userSize={userSize} position={isMazePresentable ? store.startPosition : store.userPosition} />
+          )}
           {cells}
         </MazeContainer>
       </MazeWrapper>

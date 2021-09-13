@@ -60,11 +60,16 @@ export const MazePage: FC = observer((): JSX.Element => {
     <MazePageContainer>
       <Maze
         cellSize={AppStore.cellSize}
-        borderWidth={AppStore.borderWidth}
         userSize={AppStore.userSize}
         store={mazeStore}
+        isMazePresentable={false}
       />
-      <IsWin updateStore={updateMazeStore} startDate={mazeStore.date.start} endDate={mazeStore.date.end} />
+      <IsWin
+        mazeStore={mazeStore}
+        updateStore={updateMazeStore}
+        startDate={mazeStore.date.start}
+        endDate={mazeStore.date.end}
+      />
     </MazePageContainer>
   )
 })

@@ -14,15 +14,9 @@ export interface ICell {
   isExit: boolean
   isVisited: boolean
 }
-export interface IPosition {
-  x: number
-  y: number
-}
-
 type ICellArray = Array<Array<ICell>>
 type NearDirection = 'top' | 'bottom' | 'right' | 'left' | 'null'
-
-interface ICellIndexes {
+export interface ICellIndexes {
   y: number
   x: number
 }
@@ -39,7 +33,8 @@ export interface IMazeStore {
   numberOfCells: number
   size: number
   cellsArray: ICellArray
-  userPosition: IPosition
+  startPosition: ICellIndexes
+  userPosition: ICellIndexes
   currentCell: ICell
   currentCellIndexes: ICellIndexes
   date: IDate
@@ -54,8 +49,8 @@ export interface IMazeStore {
 export class MazeStore implements IMazeStore {
   AppStore: IAppStore
   currentCellIndexes: ICellIndexes
-  startPosition: [number, number]
   cellsArray: ICellArray
+  startPosition: ICellIndexes
 
   constructor(AppStore: IAppStore) {
     makeAutoObservable(this)
@@ -108,6 +103,7 @@ export class MazeStore implements IMazeStore {
 
     let generatorPosition: NearCellIndexes = { ...startPosition, direction: 'null' }
     this.currentCellIndexes = startPosition
+    this.startPosition = startPosition
 
     //!ФУНКЦИИ
     const getNear = (generatorPosition: ICellIndexes): Array<NearCellIndexes> => {
@@ -241,7 +237,7 @@ export class MazeStore implements IMazeStore {
     this.cellsArray[this.currentCellIndexes.y][this.currentCellIndexes.x].isVisited = true
   }
 
-  get userPosition(): IPosition {
+  get userPosition(): ICellIndexes {
     return {
       x: this.currentCellIndexes.x * this.AppStore.cellSizeWithBorder + this.AppStore.borderWidth,
       y: this.currentCellIndexes.y * this.AppStore.cellSizeWithBorder + this.AppStore.borderWidth,
