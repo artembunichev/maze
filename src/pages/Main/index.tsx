@@ -10,9 +10,9 @@ const CreateMazesButton = styled.button``
 export const Main: FC = (): JSX.Element => {
   const { AppStore } = useStore()
   const [mazeSize, setMazeSize] = useState<number>(AppStore.mazeSize)
-  
+
   const goToMazePage = () => {
-    if (mazeSize > 1 && mazeSize <= 30) {
+    if (mazeSize >= 10 && mazeSize <= 30) {
       AppStore.setIsGame(true)
       AppStore.setMazeSize(mazeSize)
     }

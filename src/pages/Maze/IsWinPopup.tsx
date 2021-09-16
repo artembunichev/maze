@@ -101,7 +101,7 @@ export const IsWin: FC<IsWinProps> = observer(({ mazeStore, startDate, endDate, 
   }
 
   const restartGame = (): void => {
-    if (newMazeSize > 1 && newMazeSize <= 30) {
+    if (newMazeSize >= 10 && newMazeSize <= 30) {
       AppStore.setMazeSize(newMazeSize)
       updateStore(() => rootStore.createMazeStore.bind(rootStore)())
       AppStore.setIsWin(false)
