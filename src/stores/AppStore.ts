@@ -29,7 +29,6 @@ export class AppStore implements IAppStore {
   mazeSize = 10
   cellSize = 60
   isWin = false
-  miniCoef = 5
 
   get cellSizeWithBorder(): number {
     return this.cellSize + this.borderWidth * 2
@@ -42,6 +41,17 @@ export class AppStore implements IAppStore {
   }
   get miniUserSize(): number {
     return this.userSize / this.miniCoef
+  }
+  get miniCoef(): number {
+    if (this.mazeSize >= 10 && this.mazeSize < 12) {
+      return 3
+    } else if (this.mazeSize >= 13 && this.mazeSize < 20) {
+      return 4.1
+    } else if (this.mazeSize >= 20 && this.mazeSize <= 25) {
+      return 5
+    } else {
+      return 8
+    }
   }
 
   setIsGame(value: boolean): void {
