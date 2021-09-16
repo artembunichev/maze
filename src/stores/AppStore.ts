@@ -26,7 +26,7 @@ export class AppStore implements IAppStore {
 
   isGame = false
   borderWidth = 1
-  mazeSize = 6
+  mazeSize = 10
   cellSize = 60
   isWin = false
   miniCoef = 5
