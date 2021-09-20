@@ -1,6 +1,6 @@
 {
-  "short_name": "zeMa",
-  "name": "zeMa Maze",
+  "short_name": "maze",
+  "name": "maze",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",

@@ -11,5 +11,5 @@ const HeaderContainer = styled.div`
 `
 
 export const Header: FC = (): JSX.Element => {
-  return <HeaderContainer>Zema</HeaderContainer>
+  return <HeaderContainer>Maze</HeaderContainer>
 }

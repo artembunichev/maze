@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 import { IAppStore } from './AppStore'
-import { getRandom } from '../utils/getRandom'
+import { getRandom } from '../utils/getRandom';
 
 export interface IBorder {
   left: boolean

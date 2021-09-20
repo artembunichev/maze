@@ -32,8 +32,8 @@ const IsWinContainer = styled.div<IsWinPopupProps>`
   transition: 0.26s opacity ease-in;
 `
 const IsWinBox = styled.div<IsWinPopupProps>`
-  width: 410px;
-  height: 500px;
+  min-width: 700px;
+  min-height: 290px;
   padding: 11px;
   display: flex;
   flex-direction: column;
@@ -87,6 +87,9 @@ const NewMazeSizeInput = styled.input`
     background-color: #c5ecf1;
   }
 `
+const DescriptionSection = styled.div`
+  display: flex;
+`
 
 export const IsWin: FC<IsWinProps> = observer(({ mazeStore, startDate, endDate, updateStore }): JSX.Element => {
   const rootStore = useStore()
@@ -112,9 +115,9 @@ export const IsWin: FC<IsWinProps> = observer(({ mazeStore, startDate, endDate, 
     <IsWinContainer isVisible={AppStore.isWin}>
       <IsWinBox isVisible={AppStore.isWin}>
         {AppStore.isWin && (
-          <>
-            <IsWinTitle>You Win!</IsWinTitle>
+          <DescriptionSection>
             <IsWinBoxContent>
+              <IsWinTitle>You Win!</IsWinTitle>
               <RestartDescription>
                 <RestartDescriptionItem>
                   You win for {datePeriodFormater(startDate, endDate)}
@@ -132,7 +135,7 @@ export const IsWin: FC<IsWinProps> = observer(({ mazeStore, startDate, endDate, 
               userSize={AppStore.miniUserSize}
               isMazePresentable={true}
             />
-          </>
+          </DescriptionSection>
         )}
       </IsWinBox>
     </IsWinContainer>
